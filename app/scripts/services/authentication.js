@@ -38,7 +38,7 @@
 			authentication.isLoggedIn = function () { return _loggedIn; };
 			authentication.isAuthenticated = function () { return _authenticated; };
 			authentication.token = function () { return _token; };
-			authentication.token = function (token) { _token = token; observer.notify('authentication'); };
+			authentication.token = function (token) { _token = token; };
 			authentication.storeToken = function () { localStorage.setItem('token', _token); };
 			authentication.loadToken = function () { _token = localStorage.getItem('token') || undefined; };
 			authentication.clearToken = function () { localStorage.removeItem('token'); };
