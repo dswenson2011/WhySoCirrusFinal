@@ -1,2 +1,3 @@
 lib/configs/.ldapConfig.json
 lib/configs/.sqlConfig.json
+node_modules
