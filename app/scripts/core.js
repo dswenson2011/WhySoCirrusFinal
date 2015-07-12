@@ -7,6 +7,7 @@
 			.accentPalette('blue-grey');
 	});
 
+	// [TODO:David] rework socket factory as we might need to do forwards?
 	app.factory('socket', function (socketFactory) {
 		return socketFactory();
 	});
