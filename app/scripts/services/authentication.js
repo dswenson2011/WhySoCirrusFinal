@@ -74,7 +74,6 @@
 						username: '',
 						password: ''
 					};
-
 					DialogController.login = function () {
 						$mdDialog.hide();
 						loadingDialog();
@@ -116,4 +115,4 @@
 			};
 			return authentication;
 		}]);
-})()
+})();
