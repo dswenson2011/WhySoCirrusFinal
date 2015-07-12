@@ -12,12 +12,12 @@
 					disableParentScroll: true,
 					template:
 					'<md-dialog>' +
-						'<md-dialog-content>' +
-							'<center>' +
-								'Authenticating<br/>' +
-								'<md-progress-linear md-mode="indeterminate"></md-progress-linear>' +
-							'</center>' +
-						'</md-dialog-content>' +
+					'<md-dialog-content>' +
+					'<center>' +
+					'Authenticating<br/>' +
+					'<md-progress-linear md-mode="indeterminate"></md-progress-linear>' +
+					'</center>' +
+					'</md-dialog-content>' +
 					'</md-dialog>'
 				});
 			};
@@ -26,19 +26,23 @@
 					clickOutsideToClose: true,
 					template:
 					'<md-dialog>' +
-						'<md-dialog-content>' +
-							'<center>' +
-								'<h2 style="font-variant:small-caps;">unauthorized<h2>' +
-								'<ng-md-icon style="fill:rgba(237,110,110,1)" icon="lock_outline" size="64"></ng-md-icon>' +
-							'</center>' +
-						'</md-dialog-content>' +
+					'<md-dialog-content>' +
+					'<center>' +
+					'<h2 style="font-variant:small-caps;">unauthorized<h2>' +
+					'<ng-md-icon style="fill:rgba(237,110,110,1)" icon="lock_outline" size="64"></ng-md-icon>' +
+					'</center>' +
+					'</md-dialog-content>' +
 					'</md-dialog>'
 				});
 			};
 			authentication.isLoggedIn = function () { return _loggedIn; };
 			authentication.isAuthenticated = function () { return _authenticated; };
-			authentication.token = function () { return _token; };
-			authentication.token = function (token) { _token = token; };
+			authentication.token = function (token) {
+				if (token === undefined)
+					return _token;
+				else
+					_token = token;
+			};
 			authentication.storeToken = function () { localStorage.setItem('token', _token); };
 			authentication.loadToken = function () { _token = localStorage.getItem('token') || undefined; };
 			authentication.clearToken = function () { localStorage.removeItem('token'); };
