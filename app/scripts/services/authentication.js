@@ -1,4 +1,4 @@
-angular.module('WhySoCirrus').service('authenticationService', ['$http', '$mdDialog', '$q', '$mdToast' , function ($http, $mdDialog, $q, $mdToast) {
+angular.module('WhySoCirrus').service('authenticationService', ['$http', '$mdDialog', '$q', function ($http, $mdDialog, $q) {
 	var authentication = this;
 	var loadingDialog = function () {
 		return $mdDialog.show({
@@ -139,7 +139,6 @@ angular.module('WhySoCirrus').service('authenticationService', ['$http', '$mdDia
 	};
 
 	authentication.error = function () {
-		$mdToast.show($mdToast.simple().content('unauthorized!'));
 		$mdDialog.show({
 			clickOutsideToClose: true,
 			template: '<md-dialog>' +

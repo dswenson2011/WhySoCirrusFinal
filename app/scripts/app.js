@@ -1,10 +1,14 @@
-var app = angular.module('WhySoCirrus', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute']);
+var app = angular.module('WhySoCirrus', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io']);
 
 app.config(function ($mdThemingProvider) {
 	$mdThemingProvider.theme('default')
 		.primaryPalette('teal')
 		.accentPalette('blue-grey');
 	$mdThemingProvider.alwaysWatchTheme(true);
+});
+
+app.factory('socket', function (socketFactory) {
+	return socketFactory();
 });
 
 app.run(['authenticationService', function (authenticationService) {
@@ -117,7 +121,14 @@ app.config(function ($routeProvider) {
 	});
 });
 
-app.controller('mainCtrl', function ($rootScope, $scope, $location, layout, $mdSidenav, $mdDialog, authenticationService) {
+app.controller('mainCtrl', function ($rootScope, $scope, $location, layout, $mdSidenav, $mdDialog, $mdToast, authenticationService, socket) {
+
+	socket.on('notification', function (data) {
+		$mdToast.show($mdToast.simple({
+			content: data.message,
+			position: 'bottom right'
+		}));
+	});
 
 	$scope.onSwipeLeft = function () {
 		$mdSidenav('left').toggle();
