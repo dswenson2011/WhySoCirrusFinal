@@ -57,10 +57,9 @@
 	app.controller('MainController', MainCtrl);
 	app.controller('LogoutController', LogoutCtrl);
 	app.controller('HomeController', HomeCtrl);
-	MainCtrl.$inject = ['$location', 'authentication', 'observer', 'socket', 'layout', '$mdSidenav'];
-	function MainCtrl($location, authentication, observer, socket, layout, $mdSidenav) {
+	MainCtrl.$inject = ['$location', 'authentication', 'observer', 'socket', 'layout'];
+	function MainCtrl($location, authentication, observer, socket, layout) {
 		var MainCtrl = this;
-		MainCtrl.sidenav = $mdSidenav('left');
 		observer.register('authentication', function () {
 			MainCtrl._authenticated = authentication.isAuthenticated();
 		});
@@ -70,7 +69,7 @@
 		MainCtrl.layout = layout;
 		MainCtrl.traverse = function (link) {
 			$location.path(link);
-			layout.toggleSidenav(MainCtrl.sidenav);
+			layout.toggleSidenav('left');
 		}
 		MainCtrl.management = [
 			{

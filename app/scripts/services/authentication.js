@@ -48,24 +48,24 @@
 			authentication.clearToken = function () { localStorage.removeItem('token'); };
 			authentication.authenticate = function () {
 				var defer = $q.defer();
-				loadingDialog();
 				if (authentication.token() == undefined) {
-					_authenticated = false;
 					$mdDialog.hide();
+					_authenticated = false;
 					observer.notify('authentication');
 					defer.reject();
 				}
+				loadingDialog();
 				$http.post('/login/authenticate', { token: authentication.token() })
 					.success(function (data, status, headers, config) {
+						$mdDialog.hide();
 						_authenticated = true;
 						observer.notify('authentication');
-						$mdDialog.hide();
 						defer.resolve();
 					})
 					.error(function (err) {
+						$mdDialog.hide();
 						_authenticated = false;
 						observer.notify('authentication');
-						$mdDialog.hide();
 						errorDialog();
 						defer.reject();
 					});
@@ -112,6 +112,7 @@
 					DialogController.closeDialog = function () {
 						$mdDialog.hide();
 					};
+					return DialogController;
 				};
 				return defer.promise;
 			};
