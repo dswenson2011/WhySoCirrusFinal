@@ -3,3 +3,4 @@ lib/configs/.sqlConfig.json
 node_modules
 typings
 app/bower_components
+log
