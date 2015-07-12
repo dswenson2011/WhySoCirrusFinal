@@ -49,16 +49,17 @@
 			authentication.authenticate = function () {
 				var defer = $q.defer();
 				loadingDialog();
-				if (authentication.getToken() == undefined) {
+				if (authentication.token() == undefined) {
 					_authenticated = false;
 					$mdDialog.hide();
 					observer.notify('authentication');
 					defer.reject();
 				}
-				$http.post('/login/authenticate', { token: authentication.getToken() })
+				$http.post('/login/authenticate', { token: authentication.token() })
 					.success(function (data, status, headers, config) {
 						_authenticated = true;
 						observer.notify('authentication');
+						$mdDialog.hide();
 						defer.resolve();
 					})
 					.error(function (err) {
@@ -72,8 +73,16 @@
 			};
 			authentication.login = function () {
 				var defer = $q.defer();
-				var DialogController = function ($location, $http, $mdDialog, defer) {
-					var DialogController = this;
+				$mdDialog.show({
+					templateUrl: 'views/partials/loginDialog.html',
+					preserveScope: true,
+					controller: DialogController,
+					locals: {
+						defer: defer
+					}
+				});
+				function DialogController($scope, $location, $http, $mdDialog, defer) {
+					var DialogController = $scope;
 					DialogController.user = {
 						username: '',
 						password: ''
@@ -84,7 +93,7 @@
 						$http.post('/login', DialogController.user)
 							.success(function (data, status, headers, config) {
 								$mdDialog.hide();
-								authentication.setToken(data.token);
+								authentication.token(data.token);
 								authentication.storeToken();
 								_loggedIn = true;
 								_authenticated = true;
@@ -100,18 +109,14 @@
 								defer.reject('login');
 							});
 					};
+					DialogController.closeDialog = function () {
+						$mdDialog.hide();
+					};
 				};
-				$mdDialog.show({
-					templateUrl: 'views/partials/loginDialog.html',
-					controller: DialogController,
-					locals: {
-						defer: defer
-					}
-				});
 				return defer.promise;
 			};
 			authentication.logout = function () {
-				authentication.setToken("");
+				authentication.token("");
 				authentication.clearToken();
 				_authenticated = false;
 				_loggedIn = false;

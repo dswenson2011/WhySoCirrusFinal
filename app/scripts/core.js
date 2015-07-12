@@ -16,6 +16,8 @@
 		var observer = this;
 		var observerCallbacks = [];
 		observer.register = function (service, callback) {
+			if (observerCallbacks[service] === undefined)
+				observerCallbacks[service] = [];
 			observerCallbacks[service].push(callback);
 		};
 		observer.notify = function (service) {

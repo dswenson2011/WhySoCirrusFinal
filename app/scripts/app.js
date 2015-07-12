@@ -1,7 +1,7 @@
 (function () {
-	var app = angular.module('app', ['app.core', 'app.authentication']);
+	var app = angular.module('app', ['app.core', 'app.authentication', 'app.layout']);
 	app.run(['authentication', function (authentication) {
-		if (authentication.getToken() === undefined)
+		if (authentication.token() === undefined)
 			authentication.loadToken();
 	}]);
 	app.run(['$rootScope', '$location', 'authentication', function ($rootScope, $location, authentication) {
@@ -40,16 +40,27 @@
 			templateUrl: 'views/partials/home.html',
 			controller: 'HomeController'
 		}).when('/logout', {
-			templateUrl: 'views/partials/login.html',
+			templateUrl: 'views/partials/home.html',
 			controller: 'LogoutController'
+		}).when('/account', {
+			templateUrl: 'views/partials/home.html',
+			controller: 'AccountController',
+			access: {
+				requireLogin: false
+			}
 		});
 	});
+	app.controller('AccountController', function(){
+		var vm = this;
+		return vm;
+	})
 	app.controller('MainController', MainCtrl);
 	app.controller('LogoutController', LogoutCtrl);
 	app.controller('HomeController', HomeCtrl);
-	MainCtrl.$inject = ['$location', 'authentication', 'observer', 'socket', 'layout'];
-	function MainCtrl($location, authentication, observer, socket, layout) {
+	MainCtrl.$inject = ['$location', 'authentication', 'observer', 'socket', 'layout', '$mdSidenav'];
+	function MainCtrl($location, authentication, observer, socket, layout, $mdSidenav) {
 		var MainCtrl = this;
+		MainCtrl.sidenav = $mdSidenav('left');
 		observer.register('authentication', function () {
 			MainCtrl._authenticated = authentication.isAuthenticated();
 		});
@@ -59,7 +70,7 @@
 		MainCtrl.layout = layout;
 		MainCtrl.traverse = function (link) {
 			$location.path(link);
-			layout.toggleSidenav();
+			layout.toggleSidenav(MainCtrl.sidenav);
 		}
 		MainCtrl.management = [
 			{
@@ -129,7 +140,9 @@
 		$location.path('/');
 		return LogoutCtrl;
 	};
-	function HomeCtrl() {
+	HomeCtrl.$inject = ['layout'];
+	function HomeCtrl(layout) {
+		layout.page('Home');
 		var HomeCtrl = this;
 		return HomeCtrl;
 	};
