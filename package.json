@@ -1,0 +1,34 @@
+{
+  "name": "whysocirrus",
+  "version": "1.0.0",
+  "description": "Hyper-V web interface management system",
+  "readme": "README.md",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Swenson",
+  "license": "Unlicense",
+  "dependencies": {
+    "body-parser": "*",
+    "edge": "*",
+    "edge-ps": "*",
+    "express": "*",
+    "express-session": "*",
+    "file-stream-rotator": "*",
+    "moment": "*",
+    "morgan": "*",
+    "mysql": "*",
+    "node-uuid": "*",
+    "passport": "*",
+    "passport-windowsauth": "*",
+    "sequelize": "*",
+    "socket.io": "*"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-nodemon": "*"
+  }
+}

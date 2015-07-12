@@ -1,0 +1,60 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "node/node.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "angularjs/angular-route.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "express-session/express-session.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "mime/mime.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "node-uuid/node-uuid.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "passport/passport.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "express/express.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "moment/moment.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "angularjs/angular.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "socket.io-client/socket.io-client.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "socket.io/socket.io.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "sequelize/sequelize.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    },
+    "gruntjs/gruntjs.d.ts": {
+      "commit": "563b64359d06907fb83c1b2367f9fd5b970d5ad7"
+    }
+  }
+}

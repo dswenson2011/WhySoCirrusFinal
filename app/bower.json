@@ -1,0 +1,17 @@
+{
+  "name": "whysocirrus-client",
+  "version": "1.0.0",
+  "description": "whysocirrus client",
+  "main": "scripts/app.js",
+  "authors": [
+    "David Swenson"
+  ],
+  "license": "Unlicensed",
+  "homepage": "https://whysocirr.us",
+  "dependencies": {
+    "angular": "*",
+    "angular-route": "~1.4.2",
+    "angular-messages": "~1.4.2",
+    "angular-material": "~0.10.0"
+  }
+}

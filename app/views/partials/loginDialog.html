@@ -1,0 +1,19 @@
+<md-dialog aria-label="List dialog" flex="50">
+	<md-dialog-content>
+		<h2>Login</h2>
+		<md-content>
+			<md-input-container>
+				<label>Username</label>
+				<input type="email" ng-model="user.username">
+			</md-input-container>
+			<md-input-container>
+				<label>Password</label>
+				<input type="password" ng-model="user.password">
+			</md-input-container>
+		</md-content>
+	</md-dialog-content>
+	<div class="md-actions">
+		<md-button ng-click="login()" class="md-raised md-primary">Login</md-button>
+		<md-button ng-click="closeDialog()" class="md-warn">Cancel</md-button>
+	</div>
+</md-dialog>
