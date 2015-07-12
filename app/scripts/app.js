@@ -1,15 +1,4 @@
-var app = angular.module('WhySoCirrus', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io']);
-
-app.config(function ($mdThemingProvider) {
-	$mdThemingProvider.theme('default')
-		.primaryPalette('teal')
-		.accentPalette('blue-grey');
-	$mdThemingProvider.alwaysWatchTheme(true);
-});
-
-app.factory('socket', function (socketFactory) {
-	return socketFactory();
-});
+var app = angular.module('WhySoCirrus', ['app.core', 'app.authentication', 'app.datastore']);
 
 app.run(['authenticationService', function (authenticationService) {
 	if (authenticationService.getToken() == undefined)
