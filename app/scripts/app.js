@@ -118,12 +118,6 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('mainCtrl', function ($rootScope, $scope, $location, layout, $mdSidenav, $mdDialog, authenticationService) {
-	$scope.theme = "default";
-	$scope.clickCloud = function () {
-		var strings = ['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green', 'light-green', 'lime', 'yellow', 'amber', 'orange', 'deep-orange', 'brown', 'grey', 'blue-grey'];
-		var rand = Math.floor(Math.random() * strings.length);
-		$scope.theme = strings[rand];
-	};
 
 	$scope.onSwipeLeft = function () {
 		$mdSidenav('left').toggle();
