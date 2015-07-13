@@ -13,6 +13,7 @@ server.socket.on('connection', function () {
 	});
 });
 
+// Janky redirect of notification, might be useless keeping enabled until making sure it is useless
 server.socket.on('notification', function (data) {
 	server.socket.emit('notification', data);
 });
