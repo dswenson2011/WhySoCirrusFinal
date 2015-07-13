@@ -5,7 +5,7 @@ This is a senior project for David, and Peter at Wentworth Insitute of Technolog
 
 
 #WhySoCirrus
-Presentation - [slides.whysocirr.us/](https://slides.whysocirr.us/)
+Presentation - [whysocirr.us/slides](https://whysocirr.us/slides)
 
 Main Site - [whysocirr.us/](https://whysocirr.us/)
 
