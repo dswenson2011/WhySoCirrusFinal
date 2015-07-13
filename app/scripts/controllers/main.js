@@ -4,10 +4,11 @@
 	mainCtrl.$inject = ['authentication', 'datastore', 'layout', '$location', 'observer'];
 	function mainCtrl(authentication, datastore, layout, $location, observer) {
 		var mainCtrl = this;
-		datastore.get('user', 1);
+		datastore.get('User', 1);
 		observer.register('datastore', function () {
-			console.log('datastore callback to mainCtrl');
-		})
+			mainCtrl.user = datastore.storageLoad('User', 1);
+			console.log(mainCtrl.user);
+		});
 		observer.register('authentication', function () {
 			mainCtrl._authenticated = authentication.isAuthenticated();
 		});

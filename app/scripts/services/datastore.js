@@ -5,17 +5,23 @@
 	function datastore($http, observer, $rootScope, socket) {
 		var datastore = this;
 		var modelStorage = [];
+		datastore.storageLoad = function (mode, id) {
+			return modelStorage[mode + id];
+		}
+		socket.on('updatedModel', function (data) {
+			datastore.get(data.model, data.id);
+		});
 		datastore.get = function (model, id) {
 			$http.get('/api/' + model + '/' + id)
 				.success(function (data, status, headers, config) {
-					modelStorage[model + id] = data.data;
+					modelStorage[model + id] = data;
 					observer.notify('datastore');
 				})
 				.error(function (err) {
 					console.log(err);
 					$rootScope.$broadcast('notification', {
 						error: true,
-						message: err
+						message: "Model " + err
 					});
 				});
 		};
