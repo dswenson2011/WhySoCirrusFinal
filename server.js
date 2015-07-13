@@ -13,6 +13,10 @@ server.socket.on('connection', function () {
 	});
 });
 
+server.socket.on('notification', function (data) {
+	server.socket.emit('notification', data);
+});
+
 server.app.use(require('express').static(__dirname + '/app'));
 
 server.http.listen(80, function () {

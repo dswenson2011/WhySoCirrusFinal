@@ -12,12 +12,12 @@
 					disableParentScroll: true,
 					template:
 					'<md-dialog>' +
-					'<md-dialog-content>' +
-					'<center>' +
-					'Authenticating<br/>' +
-					'<md-progress-linear md-mode="indeterminate"></md-progress-linear>' +
-					'</center>' +
-					'</md-dialog-content>' +
+						'<md-dialog-content>' +
+							'<center>' +
+								'Authenticating<br/>' +
+								'<md-progress-linear md-mode="indeterminate"></md-progress-linear>' +
+							'</center>' +
+						'</md-dialog-content>' +
 					'</md-dialog>'
 				});
 			};
@@ -26,12 +26,12 @@
 					clickOutsideToClose: true,
 					template:
 					'<md-dialog>' +
-					'<md-dialog-content>' +
-					'<center>' +
-					'<h2 style="font-variant:small-caps;">unauthorized<h2>' +
-					'<ng-md-icon style="fill:rgba(237,110,110,1)" icon="lock_outline" size="64"></ng-md-icon>' +
-					'</center>' +
-					'</md-dialog-content>' +
+						'<md-dialog-content>' +
+							'<center>' +
+								'<h2 style="font-variant:small-caps;">unauthorized<h2>' +
+								'<ng-md-icon style="fill:rgba(237,110,110,1)" icon="lock_outline" size="64"></ng-md-icon>' +
+							'</center>' +
+						'</md-dialog-content>' +
 					'</md-dialog>'
 				});
 			};

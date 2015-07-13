@@ -16,12 +16,12 @@
 				<span flex></span>
 				<div layout="column" class="md-toolbar-tools-bottom inset">
 					<h1 style="vertical-align: center;">
-						<ng-md-icon style="fill:#FFFFFF" icon="cloud_queue" size="64"></ng-md-icon>WhySoCirrus</h1>
+						<ng-md-icon style="fill:#FFFFFF" icon="cloud_queue" size="64"></ng-md-icon> WhySoCirrus</h1>
 				</div>
 			</md-toolbar>
 			<md-content>
 				<md-list>
-					<md-list-item ng-repeat="item in main.menu" ng-click="main.traverse(item.link)">
+					<md-list-item ng-repeat="item in main.mainMenu" ng-click="main.traverse(item.link)">
 						<a>
 					<md-item-content md-ink-ripple layout="row" layout-align="start center" >
 						<div class="inset">
@@ -36,7 +36,7 @@
 					<md-divider></md-divider>
 					<md-subheader>Management</md-subheader>
 					<md-list>
-						<md-list-item ng-repeat="item in main.management" ng-click="main.traverse(item.link)">
+						<md-list-item ng-repeat="item in main.managementMenu" ng-click="main.traverse(item.link)">
 							<a>
 						<md-item-content md-ink-ripple layout="row" layout-align="start center">
 							<div class="inset">
@@ -78,6 +78,7 @@
 		<script src="/scripts/services/authentication.js"></script>
 		<script src="/scripts/services/datastore.js"></script>
 		<script src="/scripts/services/layout.js"></script>
+		<script src="/scripts/controllers/main.js"></script>
 	</body>
 
 </html>

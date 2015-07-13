@@ -12,6 +12,22 @@
 		return socketFactory();
 	});
 
+	// Toast hooks for notifications
+	app.run(['$mdToast', '$rootScope', 'socket', function ($mdToast, $rootScope, socket) {
+		socket.on('notification', function (data) {
+			$mdToast.show(toast(data));
+		});
+		$rootScope.$on('notification', function (event, data) {
+			$mdToast.show(toast(data));
+		});
+		function toast(data) {
+			return $mdToast.simple({
+				content: data.message,
+				position: 'bottom right'
+			});
+		};
+	}]);
+
 	app.service('observer', function () {
 		var observer = this;
 		var observerCallbacks = [];

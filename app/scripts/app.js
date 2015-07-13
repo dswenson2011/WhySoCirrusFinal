@@ -1,5 +1,5 @@
 (function () {
-	var app = angular.module('app', ['app.core', 'app.authentication', 'app.layout']);
+	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout']);
 	app.run(['authentication', function (authentication) {
 		if (authentication.token() === undefined)
 			authentication.loadToken();
@@ -46,92 +46,25 @@
 			templateUrl: 'views/partials/home.html',
 			controller: 'AccountController',
 			access: {
-				requireLogin: false
+				requiresLogin: false
+			}
+		}).when('/vm', {
+			templateUrl: 'views/partials/home.html',
+			controller: 'AccountController',
+			access: {
+				requiresLogin: true
 			}
 		});
 	});
-	app.controller('AccountController', function(){
+
+	app.controller('AccountController', ['layout', function (layout) {
 		var vm = this;
+		layout.page('SecuredArea');
 		return vm;
-	})
-	app.controller('MainController', MainCtrl);
+	}]);
+
 	app.controller('LogoutController', LogoutCtrl);
 	app.controller('HomeController', HomeCtrl);
-	MainCtrl.$inject = ['$location', 'authentication', 'observer', 'socket', 'layout'];
-	function MainCtrl($location, authentication, observer, socket, layout) {
-		var MainCtrl = this;
-		observer.register('authentication', function () {
-			MainCtrl._authenticated = authentication.isAuthenticated();
-		});
-		observer.register('layout', function () {
-			MainCtrl.title = layout.page().capitalizeFirstLetter();
-		});
-		MainCtrl.layout = layout;
-		MainCtrl.traverse = function (link) {
-			$location.path(link);
-			layout.toggleSidenav('left');
-		}
-		MainCtrl.management = [
-			{
-				link: '/vm',
-				title: 'Virtual Machines',
-				icon: 'cloud'
-			},
-			{
-				link: '/storage',
-				title: 'Virtual Disks',
-				icon: 'storage'
-			},
-			{
-				link: '/network',
-				title: 'Network Connection',
-				icon: 'public'
-			},
-			{
-				link: '/messages',
-				title: 'Messages',
-				icon: 'message'
-			},
-			{
-				link: '/tasks',
-				title: 'Tasks',
-				icon: 'list'
-			},
-			{
-				link: '/settings',
-				title: 'Settings',
-				icon: 'settings'
-			},
-			{
-				link: '/logout',
-				title: 'Logout',
-				icon: 'logout',
-			}
-		];
-		MainCtrl.menu = [
-			{
-				link: '/',
-				title: 'Dashboard',
-				icon: 'dashboard'
-			},
-			{
-				link: '/about',
-				title: 'About',
-				icon: 'info_outline'
-			},
-			{
-				link: '/faq',
-				title: 'F.A.Q',
-				icon: 'question_answer'
-			},
-			{
-				link: '/account',
-				title: 'Account',
-				icon: 'account_circle'
-			}
-		];
-		return MainCtrl;
-	};
 	LogoutCtrl.$inject = ['$location', 'authentication'];
 	function LogoutCtrl($location, authentication) {
 		var LogoutCtrl = this;
