@@ -1,6 +1,8 @@
 # Author notes
 I really should keep better documentation, and comments but hey I'm trying to learn best practices still.
 
+This is a senior project for David, and Peter at Wentworth Insitute of Technology. Code shouldn't be used in any production environment, hell it shouldn't be looked at as it probably and so will not be the highest quality.
+
 
 #WhySoCirrus
 Presentation - [https://slides.whysocirr.us/](slides.whysocirr.us/)
