@@ -17,6 +17,7 @@
 	function routeOption(route) {
 		return {
 			controller: route + 'Controller',
+			controllerAs: route,
 			templateUrl: 'views/partials/' + route + '.html'
 		};
 	};

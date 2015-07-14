@@ -1,0 +1,32 @@
+<md-card flex-gt-sm="90" flex-gt-md="80">
+	<md-toolbar class="md-primary">
+		<h1 class="md-toolbar-tools">Account Information</h1>
+	</md-toolbar>
+	<md-content layout-padding>
+		<form name="userForm">
+			<div layout layout-sm="column">
+				<md-input-container flex>
+					<label>First name</label>
+					<input type="text" ng-model="main.user.firstName">
+				</md-input-container>
+				<md-input-container flex>
+					<label>Last Name</label>
+					<input type="text" ng-model="main.user.lastName">
+				</md-input-container>
+			</div>
+			<div layout layout-sm="column">
+				<md-input-container flex>
+					<label>Display Name</label>
+					<input type="text" ng-model="main.user.displayName">
+				</md-input-container>
+				<md-input-container flex>
+					<label>Gravatar</label>
+					<input type="email" ng-model="main.user.avatar">
+				</md-input-container>
+			</div>
+			<div class="md-actions" layout layout-sm="column" layout-align="end center">
+				<md-button class="md-raised md-primary" ng-click="settings.save('User', main.user)">Save</md-button>
+			</div>
+		</form>
+	</md-content>
+</md-card>
