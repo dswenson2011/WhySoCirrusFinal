@@ -1,13 +1,13 @@
 (function () {
 	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io']);
-	app.config(function ($mdThemingProvider) {
+	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
 			.primaryPalette('teal')
 			.accentPalette('blue-grey');
-	});
-	app.factory('socket', function (socketFactory) {
+	}]);
+	app.factory('socket', ['socketFactory', function (socketFactory) {
 		return socketFactory();
-	});
+	}]);
 	app.run(['$mdToast', '$rootScope', 'socket', function ($mdToast, $rootScope, socket) {
 		socket.on('notification', function (data) {
 			$mdToast.show(toast(data));

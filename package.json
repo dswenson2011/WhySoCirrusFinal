@@ -28,6 +28,9 @@
   },
   "devDependencies": {
     "grunt": "*",
+    "grunt-concurrent": "^2.0.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "*",
     "grunt-nodemon": "*"
   }

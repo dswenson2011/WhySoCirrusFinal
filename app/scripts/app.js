@@ -1,8 +1,10 @@
 (function () {
-	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout']);
+	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes']);
 	app.run(['authentication', function (authentication) {
 		if (authentication.token() === undefined)
 			authentication.loadToken();
+		if (authentication.id() === undefined)
+			authentication.loadID();
 	}]);
 	app.run(['$rootScope', '$location', 'authentication', function ($rootScope, $location, authentication) {
 		$rootScope.$on('$routeChangeStart', function (event, next) {
@@ -35,36 +37,9 @@
 			}
 		});
 	}]);
-	app.config(function ($routeProvider) {
-		$routeProvider.when('/', {
-			templateUrl: 'views/partials/home.html',
-			controller: 'HomeController'
-		}).when('/logout', {
-			templateUrl: 'views/partials/home.html',
-			controller: 'LogoutController'
-		}).when('/account', {
-			templateUrl: 'views/partials/home.html',
-			controller: 'AccountController',
-			access: {
-				requiresLogin: false
-			}
-		}).when('/vm', {
-			templateUrl: 'views/partials/home.html',
-			controller: 'AccountController',
-			access: {
-				requiresLogin: true
-			}
-		});
-	});
 
-	app.controller('AccountController', ['layout', function (layout) {
-		var vm = this;
-		layout.page('SecuredArea');
-		return vm;
-	}]);
-
-	app.controller('LogoutController', LogoutCtrl);
-	app.controller('HomeController', HomeCtrl);
+	app.controller('logoutController', LogoutCtrl);
+	app.controller('homeController', HomeCtrl);
 	LogoutCtrl.$inject = ['$location', 'authentication'];
 	function LogoutCtrl($location, authentication) {
 		var LogoutCtrl = this;

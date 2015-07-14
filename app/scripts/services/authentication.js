@@ -5,6 +5,7 @@
 			var _loggedIn = false;
 			var _authenticated = false;
 			var _token = undefined;
+			var _id = undefined;
 			var loadingDialog = function () {
 				return $mdDialog.show({
 					clickOutsideToClose: false,
@@ -37,6 +38,15 @@
 			};
 			authentication.isLoggedIn = function () { return _loggedIn; };
 			authentication.isAuthenticated = function () { return _authenticated; };
+			authentication.id = function (id) {
+				if (id === undefined)
+					return _id;
+				else
+					_id = id;
+			};
+			authentication.storeID = function () { localStorage.setItem('id', _id); };
+			authentication.loadID = function () { _token = localStorage.getItem('id') || undefined; };
+			authentication.clearID = function () { localStorage.removeItem('id'); };
 			authentication.token = function (token) {
 				if (token === undefined)
 					return _token;
@@ -93,8 +103,10 @@
 						$http.post('/login', DialogController.user)
 							.success(function (data, status, headers, config) {
 								$mdDialog.hide();
+								authentication.id(data.id);
 								authentication.token(data.token);
 								authentication.storeToken();
+								authentication.storeID();
 								_loggedIn = true;
 								_authenticated = true;
 								observer.notify('authentication');
@@ -118,7 +130,9 @@
 			};
 			authentication.logout = function () {
 				authentication.token("");
+				authentication.id("");
 				authentication.clearToken();
+				authentication.clearID();
 				_authenticated = false;
 				_loggedIn = false;
 				observer.notify('authentication');

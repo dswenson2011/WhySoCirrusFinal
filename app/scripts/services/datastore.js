@@ -8,12 +8,11 @@
 		socket.on('updatedModel', function (data) {
 			datastore.get(data.model, data.id);
 		});
-
 		datastore.storageLoad = function (mode, id) {
 			return modelStorage[mode + id];
 		}
 		datastore.get = function (model, id) {
-			$http.get('/api/' + model + '/' + id)
+			$http.get('/api/' + model.capitalizeFirstLetter() + '/' + id)
 				.success(function (data, status, headers, config) {
 					modelStorage[model + id] = data;
 					observer.notify('datastore');
