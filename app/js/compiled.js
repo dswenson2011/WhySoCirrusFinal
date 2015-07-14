@@ -441,9 +441,10 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('settingsController', SettingsCtrl);
-	SettingsCtrl.$inject = ['datastore', 'observer'];
-	function SettingsCtrl(datastore, observer) {
+	SettingsCtrl.$inject = ['datastore', 'layout', 'observer'];
+	function SettingsCtrl(datastore, layout, observer) {
 		var SettingsCtrl = this;
+		layout.page("settings");
 		SettingsCtrl.save = function (Model, Object) {
 			datastore.update(Model, Object);
 		};
