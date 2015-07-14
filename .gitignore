@@ -3,4 +3,6 @@ lib/configs/.sqlConfig.json
 node_modules
 typings
 app/bower_components
+app/js/compiled.js
+app/js/compiled.min.js
 log
