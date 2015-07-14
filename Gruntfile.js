@@ -47,5 +47,5 @@ module.exports = function (grunt) {
 	grunt.task.loadNpmTasks('grunt-contrib-concat');
 	grunt.task.loadNpmTasks('grunt-concurrent');
 
-	grunt.task.registerTask('default', ['concurrent']);
+	grunt.task.registerTask('default', ['concat', 'uglify', 'concurrent']);
 };
