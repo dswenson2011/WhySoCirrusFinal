@@ -37,16 +37,7 @@
 			}
 		});
 	}]);
-
-	app.controller('logoutController', LogoutCtrl);
 	app.controller('homeController', HomeCtrl);
-	LogoutCtrl.$inject = ['$location', 'authentication'];
-	function LogoutCtrl($location, authentication) {
-		var LogoutCtrl = this;
-		authentication.logout();
-		$location.path('/');
-		return LogoutCtrl;
-	};
 	HomeCtrl.$inject = ['layout'];
 	function HomeCtrl(layout) {
 		layout.page('Home');

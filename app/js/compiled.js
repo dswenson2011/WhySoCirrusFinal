@@ -323,16 +323,7 @@ String.prototype.capitalizeFirstLetter = function () {
 			}
 		});
 	}]);
-
-	app.controller('logoutController', LogoutCtrl);
 	app.controller('homeController', HomeCtrl);
-	LogoutCtrl.$inject = ['$location', 'authentication'];
-	function LogoutCtrl($location, authentication) {
-		var LogoutCtrl = this;
-		authentication.logout();
-		$location.path('/');
-		return LogoutCtrl;
-	};
 	HomeCtrl.$inject = ['layout'];
 	function HomeCtrl(layout) {
 		layout.page('Home');
@@ -349,6 +340,17 @@ String.prototype.capitalizeFirstLetter = function () {
 		AccountCtrl.logs =[{action:'Create',item:'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK'},{action:'Create',item:'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK'},{action:'Create',item:'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK'}];
 		layout.page("account");
 		return AccountCtrl;
+	};
+})();
+(function () {
+	var app = angular.module('app');
+	app.controller('logoutController', LogoutCtrl);
+	LogoutCtrl.$inject = ['$location', 'authentication'];
+	function LogoutCtrl($location, authentication) {
+		var LogoutCtrl = this;
+		authentication.logout();
+		$location.path('/');
+		return LogoutCtrl;
 	};
 })();
 (function () {
