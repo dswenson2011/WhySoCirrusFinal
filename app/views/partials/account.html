@@ -1,5 +1,29 @@
-<md-card flex-gt-sm="90" flex-gt-md="80">
-	<md-card-content>
-		<h2>Hello, World!</h2>
+<md-content layout-padding>
+	<md-card flex-gt-sm="90" flex-gt-md="80">
+		<md-card-content>
+			<md-data-table-toolbar>
+				<h2 class="md-title">Logs</h2>
+			</md-data-table-toolbar>
+			<md-data-table-container>
+				<table md-data-table md-row-select="selected">
+					<thead md-order="action" md-trigger="onOrderChange">
+						<tr>
+							<th order-by="action">Action</th>
+							<th order-by="item">Item</th>
+							<th order-by="date">Date</th>
+							<th order-by="result">Result</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="log in account.logs | orderBy: action">
+							<td>{{ log.action }}</td>
+							<td>{{ log.item }}</td>
+							<td>{{ log.date }}</td>
+							<td>{{ log.result }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</md-data-table-container>
 		</md-card-content>
-</md-card>
+	</md-card>
+</md-content>

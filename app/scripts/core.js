@@ -1,5 +1,5 @@
 (function () {
-	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io']);
+	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io', 'md.data.table']);
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
 			.primaryPalette('teal')

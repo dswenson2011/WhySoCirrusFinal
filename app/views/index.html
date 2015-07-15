@@ -7,20 +7,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>WhySoCirrus Client</title>
 		<link href="/bower_components/angular-material/angular-material.min.css" rel="stylesheet" />
+		<link href="/bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet" />
 		<link href="/styles/style.css" rel="stylesheet" />
 	</head>
 	<body layout="row" ng-controller="MainController as main" md-swipe-right="main.layout.onSwipeRight('left')" ng-cloak>
 		<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-swipe-left="main.layout.onSwipeLeft('left')" md-component-id="left"
 		md-is-locked-open="$mdMedia('gt-sm')">
-			<md-toolbar class="md-hue-2">
+			<md-toolbar class="md-tall md-hue-2">
 				<span flex></span>
 				<div layout="column" class="md-toolbar-tools-bottom inset">
 					<h1 style="vertical-align: center;">
-						<ng-md-icon style="fill:#FFFFFF" icon="cloud_queue" size="64"></ng-md-icon>WhySoCirrus</h1>
+						<ng-md-icon style="fill:#FFFFFF" icon="cloud_queue" size="64"></ng-md-icon> WhySoCirrus</h1>
 				</div>
 			</md-toolbar>
 			<md-content>
-				<md-list>
+				<md-list layout-padding>
 					<md-list-item ng-repeat="item in main.mainMenu" ng-click="main.traverse(item.link)">
 						<a>
 					<md-item-content md-ink-ripple layout="row" layout-align="start center" >
@@ -34,8 +35,7 @@
 				</md-list>
 				<div ng-if="main._authenticated">
 					<md-divider></md-divider>
-					<md-subheader>Management</md-subheader>
-					<md-list>
+					<md-list layout-padding>
 						<md-list-item ng-repeat="item in main.managementMenu" ng-click="main.traverse(item.link)">
 							<a>
 						<md-item-content md-ink-ripple layout="row" layout-align="start center">
@@ -70,6 +70,7 @@
 		<script src="/bower_components/angular-material/angular-material.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.5.0/angular-material-icons.min.js"></script>
 		<script src="/bower_components/angular-messages/angular-messages.min.js"></script>
+		<script src="/bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
 		<script src="/bower_components/angular-route/angular-route.min.js"></script>
 		<script src="/bower_components/angular-socket-io/socket.min.js"></script>
 		<script src="/js/compiled.js"></script>
