@@ -24,7 +24,6 @@ server.app.post('/githubHook', function (req, res) {
 	require('edge').func('ps', function(){
 		/*git pull*/
 	});
-	console.log('hook');
 	res.sendStatus(200);
 });
 
