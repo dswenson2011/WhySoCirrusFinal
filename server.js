@@ -22,7 +22,10 @@ server.app.use(require('express').static(__dirname + '/app'));
 
 server.app.post('/githubHook', function (req, res) {
 	require('edge').func('ps', function(){
-		/*git pull*/
+		/*
+			cd C:\Users\Administrator\Desktop\Node\WhySoCirrusFinal
+			git pull
+		*/
 	});
 	res.sendStatus(200);
 });
