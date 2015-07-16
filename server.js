@@ -27,7 +27,9 @@ server.app.post('/githubHook', function (req, res) {
 			git pull
 		*/
 	});
-	console.log(ps);
+	ps('',function(err, result){
+		console.log(result);
+	});
 	res.sendStatus(200);
 });
 
