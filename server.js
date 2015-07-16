@@ -21,12 +21,13 @@ server.socket.on('notification', function (data) {
 server.app.use(require('express').static(__dirname + '/app'));
 
 server.app.post('/githubHook', function (req, res) {
-	require('edge').func('ps', function(){
+	var ps = require('edge').func('ps', function(){
 		/*
 			cd C:\Users\Administrator\Desktop\Node\WhySoCirrusFinal
 			git pull
 		*/
 	});
+	console.log(ps);
 	res.sendStatus(200);
 });
 
