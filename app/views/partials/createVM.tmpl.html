@@ -2,7 +2,7 @@
 	<h2 class="md-title">Launch Virtual Machine</h2>
 	<md-input-container>
 		<label>Name</label>
-		<input ng-model="vm.name" type="text">
+		<input ng-model="vm.name" type="text" required>
 	</md-input-container>
 	<div layout flex>
 		<div flex="20" layout layout-align="start center">
@@ -24,7 +24,7 @@
 		<div flex="20" layout layout-align="start center">
 			<span class="md-body-1">Operating System</span>
 		</div>
-		<md-select flex placeholder="Operating System" ng-model="vm.os">
+		<md-select flex placeholder="Operating System" ng-model="vm.os" required>
 			<md-option value="centos">CentOS</md-option>
 			<md-option value="ubuntu">Ubuntu</md-option>
 			<md-option value="windows">Windows</md-option>
@@ -34,7 +34,7 @@
 	</div>
 	<div layout flex>
 		<div flex="20" layout layout-align="start center">
-			<span class="md-body-1">HDD (GB)
+			<span class="md-body-1">Hard Drive (GB)
 				<md-tooltip ng-bind="vm.storage"></md-tooltip>
 			</span>
 		</div>
@@ -44,10 +44,14 @@
 		<div flex="20" layout layout-align="start center">
 			<span class="md-body-1">Network Adapter</span>
 		</div>
-		<md-select placeholder="Network Adapter" ng-model="vm.network">
+		<md-select placeholder="Network Adapter" ng-model="vm.network" required>
 			<md-option value="Test1">External Only</md-option>
 			<md-option value="Test3">Private Only</md-option>
 			<md-option value="Test2">External & Private</md-option>
 		</md-select>
+	</div>
+	<div layout flex layout-align="end center">
+		<md-button class="md-raised md-primary" ng-click="launch(vm)">Launch</md-button>
+		<md-button class="md-warn" ng-click="close()">Cancel</md-button>
 	</div>
 </md-bottom-sheet>

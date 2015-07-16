@@ -1,9 +1,32 @@
 <md-content layout-padding>
 	<md-card flex-gt-sm="90" flex-gt-md="80">
-		<md-card-content></md-card-content>
-	</md-card>
-	<md-card flex-gt-sm="90" flex-gt-md="80">
 		<md-card-content>
+			<md-data-table-container>
+				<table md-data-table md-row-select="vm.selected">
+					<thead md-order="name" md-trigger="onOrderChange">
+						<tr>
+							<th>Name</th>
+							<th>Operating System</th>
+							<th>CPU (Cores)</th>
+							<th>RAM (MB)</th>
+							<th>HDD (GB)</th>
+							<th>Network</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="vmItem in vm.vms | orderBy: action">
+							<td>{{vmItem.name}}</td>
+							<td>{{vmItem.os}}</td>
+							<td>{{vmItem.cpu}}</td>
+							<td>{{vmItem.ram}}</td>
+							<td>{{vmItem.storage}}</td>
+							<td>{{vmItem.network}}</td>
+							<td>{{vmItem.status}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</md-data-table-container>
 		</md-card-content>
 	</md-card>
 </md-content>

@@ -2,8 +2,11 @@
 	var app = angular.module('app');
 
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet'];
-	function vmCtrl(layout, $mdBottomSheet) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
+	function vmCtrl(layout, $mdBottomSheet, $mdToast) {
+		var vmCtrl = this;
+		vmCtrl.selected = [];
+		vmCtrl.vms = [];
 		layout.page("Virtual Machines");
 		layout.newDialog('vmCreate', function () {
 			$mdBottomSheet.show({
@@ -11,22 +14,38 @@
 				controller: bottomCtrl
 			});
 			function bottomCtrl($scope) {
-				console.log('bottom sheet');
+				$scope.launch = function (vm) {
+					if (vm.name == undefined || vm.os == undefined || vm.network == undefined) {
+						$mdToast.show($mdToast.simple({
+							content: 'Warning items are missing!'
+						}));
+						return;
+					}
+					vm.status = 'OFF';
+					vmCtrl.vms.push(vm);
+					$mdBottomSheet.hide();
+				};
+				$scope.close = function () {
+					$mdBottomSheet.hide();
+				};
 			};
 		});
+		function Test(item) {
+			console.log(item);
+		};
 		layout.tools([
 			{
 				action: layout.openDialog,
 				params: 'vmCreate',
-				icon: "create",
+				icon: "add",
 				tooltip: {
 					message: "Create new VM",
 					direction: "left"
 				}
 			},
 			{
-				action: layout.openDialog,
-				params: 'vmCreate',
+				action: Test,
+				params: vmCtrl.selected,
 				icon: "description",
 				tooltip: {
 					message: "View VM",
@@ -43,5 +62,6 @@
 				}
 			}
 		]);
+		return vmCtrl;
 	};
 })();
