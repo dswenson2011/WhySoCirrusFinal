@@ -28,7 +28,7 @@ server.app.post('/githubHook', function (req, res) {
 		*/
 	});
 	ps('',function(err, result){
-		console.log(result);
+		//console.log(result);
 	});
 	res.sendStatus(200);
 });
