@@ -31,3 +31,9 @@ md-sidenav ng-md-icon {
   position: relative;
   top: 5px;
 }
+ng-md-icon {
+  fill: currentColor;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1;
+}
