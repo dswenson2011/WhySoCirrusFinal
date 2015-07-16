@@ -13,6 +13,7 @@
   "dependencies": {
     "body-parser": "*",
     "edge": "*",
+    "edge-ps": "*",
     "express": "*",
     "express-session": "*",
     "file-stream-rotator": "*",

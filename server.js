@@ -20,6 +20,12 @@ server.socket.on('notification', function (data) {
 
 server.app.use(require('express').static(__dirname + '/app'));
 
+server.app.post('/githubHook', function (req, res) {
+	require('edge').func('ps', function(){
+		/*git pull*/
+	});
+});
+
 server.http.listen(80, function () {
 	console.log('Listening at http://%s:%s ', this.address().address, this.address().port);
 });
