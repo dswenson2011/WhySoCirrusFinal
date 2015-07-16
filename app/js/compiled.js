@@ -265,12 +265,26 @@ String.prototype.capitalizeFirstLetter = function () {
 	app.service('layout', ['$mdSidenav', '$mdToast', 'observer', 'socket', function ($mdSidenav, $mdToast, observer, socket) {
 		var layout = this;
 		var _page = undefined;
+		var _tools = undefined;
+		var _dialogs = [];
 		socket.on('notifcation', function (data) {
 			$mdToast.show($mdToast.simple({
 				content: data.message,
 				position: 'bottom right'
 			}));
 		});
+		layout.newDialog = function (name, fn) {
+			if (_dialogs[name] == undefined)
+				_dialogs[name] = [];
+			_dialogs[name].push(fn);
+		};
+		layout.openDialog = function (name) {
+			console.log('open');
+			angular.forEach(_dialogs[name], function (fn) {
+				console.log(fn);
+				fn();
+			});
+		};
 		layout.onSwipeLeft = function (sidenav) { $mdSidenav(sidenav).open(); };
 		layout.onSwipeRight = function (sidenav) { $mdSidenav(sidenav).close(); };
 		layout.toggleSidenav = function (sidenav) { $mdSidenav(sidenav).toggle(); };
@@ -279,6 +293,13 @@ String.prototype.capitalizeFirstLetter = function () {
 				return _page;
 			else
 				_page = page;
+			observer.notify('layout');
+		};
+		layout.tools = function (tools) {
+			if (tools === undefined)
+				return _tools;
+			else
+				_tools = tools;
 			observer.notify('layout');
 		};
 		return layout;
@@ -373,6 +394,9 @@ String.prototype.capitalizeFirstLetter = function () {
 		observer.register('layout', function () {
 			mainCtrl.title = layout.page().capitalizeFirstLetter();
 		});
+		observer.register('layout', function () {
+			mainCtrl.tools = layout.tools();
+		});
 		mainCtrl.layout = layout;
 		mainCtrl.traverse = function (link) {
 			$location.path(link);
@@ -458,7 +482,46 @@ String.prototype.capitalizeFirstLetter = function () {
 	var app = angular.module('app');
 
 	app.controller('vmController', vmCtrl);
-	function vmCtrl() {
-
+	vmCtrl.$inject = ['layout', '$mdBottomSheet'];
+	function vmCtrl(layout, $mdBottomSheet) {
+		layout.page("Virtual Machines");
+		layout.newDialog('vmCreate', function () {
+			$mdBottomSheet.show({
+				templateUrl: 'views/partials/createVM.tmpl.html',
+				controller: bottomCtrl
+			});
+			function bottomCtrl($scope) {
+				console.log('bottom sheet');
+			};
+		});
+		layout.tools([
+			{
+				action: layout.openDialog,
+				params: 'vmCreate',
+				icon: "create",
+				tooltip: {
+					message: "Create new VM",
+					direction: "left"
+				}
+			},
+			{
+				action: layout.openDialog,
+				params: 'vmCreate',
+				icon: "description",
+				tooltip: {
+					message: "View VM",
+					direction: "left"
+				}
+			},
+			{
+				action: layout.openDialog,
+				params: 'vmCreate',
+				icon: "delete",
+				tooltip: {
+					message: "Delete VM",
+					direction: "left"
+				}
+			}
+		]);
 	};
 })();

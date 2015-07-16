@@ -18,6 +18,9 @@
 		observer.register('layout', function () {
 			mainCtrl.title = layout.page().capitalizeFirstLetter();
 		});
+		observer.register('layout', function () {
+			mainCtrl.tools = layout.tools();
+		});
 		mainCtrl.layout = layout;
 		mainCtrl.traverse = function (link) {
 			$location.path(link);

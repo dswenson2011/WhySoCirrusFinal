@@ -17,7 +17,7 @@
 				<span flex></span>
 				<div layout="column" class="md-toolbar-tools-bottom inset">
 					<h1 style="vertical-align: center;">
-						<ng-md-icon style="fill:#FFFFFF" icon="cloud_queue" size="64"></ng-md-icon> WhySoCirrus</h1>
+						<ng-md-icon style="fill:#FFFFFF" icon="cloud_queue" size="64"></ng-md-icon>WhySoCirrus</h1>
 				</div>
 			</md-toolbar>
 			<md-content>
@@ -57,6 +57,11 @@
 						<md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
 					</md-button>
 					<h1 ng-bind="main.title"></h1>
+					<span flex></span>
+					<md-button ng-repeat="tool in main.tools" ng-click="tool.action(tool.params)" class="md-icon-button" aria-label="Create">
+						<ng-md-icon icon="{{ tool.icon }}"></ng-md-icon>
+						<md-tooltip md-direction="{{ tool.tooltip.direction }}">{{ tool.tooltip.message }}</md-tooltip>
+					</md-button>
 				</div>
 			</md-toolbar>
 			<md-content flex md-scroll-y class="md-padding">
