@@ -61,19 +61,19 @@
 			},
 			{
 				link: '/network',
-				title: 'Network Connection',
+				title: 'Network Adapters',
 				icon: 'public'
 			},
-			{
-				link: '/messages',
-				title: 'Messages',
-				icon: 'message'
-			},
-			{
-				link: '/tasks',
-				title: 'Tasks',
-				icon: 'list'
-			},
+			// {
+			// 	link: '/messages',
+			// 	title: 'Messages',
+			// 	icon: 'message'
+			// },
+			// {
+			// 	link: '/tasks',
+			// 	title: 'Tasks',
+			// 	icon: 'list'
+			// },
 			{
 				link: '/settings',
 				title: 'Settings',

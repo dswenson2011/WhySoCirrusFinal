@@ -354,13 +354,34 @@ String.prototype.capitalizeFirstLetter = function () {
 })();
 (function () {
 	var app = angular.module('app');
+	app.controller('aboutController', aboutCtrl);
+	aboutCtrl.$inject = ['layout'];
+	function aboutCtrl(layout) {
+		layout.page("about");
+		layout.tools("");
+	};
+})();
+(function () {
+	var app = angular.module('app');
 	app.controller('accountController', AccountCtrl);
 	AccountCtrl.$inject = ['datastore', 'layout', 'observer'];
 	function AccountCtrl(datastore, layout, observer) {
 		var AccountCtrl = this;
 		AccountCtrl.logs =[{action:'Create',item:'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK'},{action:'Create',item:'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK'},{action:'Create',item:'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK'}];
 		layout.page("account");
+		layout.tools("");
 		return AccountCtrl;
+	};
+})();
+(function () {
+	var app = angular.module('app');
+	app.controller('faqController', faqCtrl);
+	faqCtrl.$inject = ['layout'];
+	function faqCtrl(layout) {
+		var faqCtrl = this;
+		layout.page("F.A.Q");
+		layout.tools("");
+		return faqCtrl;
 	};
 })();
 (function () {
@@ -437,19 +458,19 @@ String.prototype.capitalizeFirstLetter = function () {
 			},
 			{
 				link: '/network',
-				title: 'Network Connection',
+				title: 'Network Adapters',
 				icon: 'public'
 			},
-			{
-				link: '/messages',
-				title: 'Messages',
-				icon: 'message'
-			},
-			{
-				link: '/tasks',
-				title: 'Tasks',
-				icon: 'list'
-			},
+			// {
+			// 	link: '/messages',
+			// 	title: 'Messages',
+			// 	icon: 'message'
+			// },
+			// {
+			// 	link: '/tasks',
+			// 	title: 'Tasks',
+			// 	icon: 'list'
+			// },
 			{
 				link: '/settings',
 				title: 'Settings',
@@ -467,11 +488,49 @@ String.prototype.capitalizeFirstLetter = function () {
 })();
 (function () {
 	var app = angular.module('app');
+	app.controller('networkController', networkCtrl);
+	networkCtrl.$inject = ['layout'];
+	function networkCtrl(layout) {
+		var networkCtrl = this;
+		networkCtrl.selected = [];
+		layout.page('network adapters');
+		layout.newDialog('networkCreate', function () {
+			console.log('Create new network adapter dialog');
+		});
+		layout.newDialog('networkDelete', function () {
+			console.log('Delete selected network adapter dialog');
+		});
+		layout.tools([
+			{
+				action: layout.openDialog,
+				params: 'networkCreate',
+				icon: "add",
+				tooltip: {
+					message: "Create new network adapter",
+					direction: "left"
+				}
+			},
+			{
+				action: layout.openDialog,
+				params: 'networkDelete',
+				icon: "delete",
+				tooltip: {
+					message: "Delete network adapter",
+					direction: "left"
+				}
+			}
+		]);
+		return networkCtrl;
+	};
+})();
+(function () {
+	var app = angular.module('app');
 	app.controller('settingsController', SettingsCtrl);
 	SettingsCtrl.$inject = ['datastore', 'layout', 'observer'];
 	function SettingsCtrl(datastore, layout, observer) {
 		var SettingsCtrl = this;
 		layout.page("settings");
+		layout.tools("");
 		SettingsCtrl.save = function (Model, Object) {
 			datastore.update(Model, Object);
 		};
