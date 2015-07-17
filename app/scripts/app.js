@@ -37,11 +37,4 @@
 			}
 		});
 	}]);
-	app.controller('homeController', HomeCtrl);
-	HomeCtrl.$inject = ['layout'];
-	function HomeCtrl(layout) {
-		layout.page('Home');
-		var HomeCtrl = this;
-		return HomeCtrl;
-	};
 })();

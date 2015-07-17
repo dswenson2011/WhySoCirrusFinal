@@ -3,7 +3,7 @@
 	app.controller('aboutController', aboutCtrl);
 	aboutCtrl.$inject = ['layout'];
 	function aboutCtrl(layout) {
-		layout.page("about");
-		layout.tools("");
+		layout.page('about');
+		layout.tools('');
 	};
 })();

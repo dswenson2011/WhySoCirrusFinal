@@ -4,8 +4,8 @@
 	SettingsCtrl.$inject = ['datastore', 'layout', 'observer'];
 	function SettingsCtrl(datastore, layout, observer) {
 		var SettingsCtrl = this;
-		layout.page("settings");
-		layout.tools("");
+		layout.page('settings');
+		layout.tools('');
 		SettingsCtrl.save = function (Model, Object) {
 			datastore.update(Model, Object);
 		};

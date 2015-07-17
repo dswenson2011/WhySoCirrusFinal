@@ -4,8 +4,8 @@
 	faqCtrl.$inject = ['layout'];
 	function faqCtrl(layout) {
 		var faqCtrl = this;
-		layout.page("F.A.Q");
-		layout.tools("");
+		layout.page('F.A.Q');
+		layout.tools('');
 		return faqCtrl;
 	};
 })();

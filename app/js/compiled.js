@@ -89,12 +89,12 @@ String.prototype.capitalizeFirstLetter = function () {
 				disableParentScroll: true,
 				template:
 				'<md-dialog>' +
-				'<md-dialog-content>' +
-				'<center>' +
-				'Authenticating<br/>' +
-				'<md-progress-linear md-mode="indeterminate"></md-progress-linear>' +
-				'</center>' +
-				'</md-dialog-content>' +
+					'<md-dialog-content>' +
+						'<center>' +
+							'Authenticating<br/>' +
+							'<md-progress-linear md-mode="indeterminate"></md-progress-linear>' +
+						'</center>' +
+					'</md-dialog-content>' +
 				'</md-dialog>'
 			});
 		};
@@ -103,12 +103,12 @@ String.prototype.capitalizeFirstLetter = function () {
 				clickOutsideToClose: true,
 				template:
 				'<md-dialog>' +
-				'<md-dialog-content>' +
-				'<center>' +
-				'<h2 style="font-variant:small-caps;">unauthorized<h2>' +
-				'<ng-md-icon style="fill:rgba(237,110,110,1)" icon="lock_outline" size="64"></ng-md-icon>' +
-				'</center>' +
-				'</md-dialog-content>' +
+					'<md-dialog-content>' +
+						'<center>' +
+							'<h2 style="font-variant:small-caps;">unauthorized<h2>' +
+							'<ng-md-icon style="fill:rgba(237,110,110,1)" icon="lock_outline" size="64"></ng-md-icon>' +
+						'</center>' +
+					'</md-dialog-content>' +
 				'</md-dialog>'
 			});
 		};
@@ -295,11 +295,14 @@ String.prototype.capitalizeFirstLetter = function () {
 			_dialogs[name].push(fn);
 		};
 		layout.openDialog = function (name) {
-			console.log('open');
 			angular.forEach(_dialogs[name], function (fn) {
-				console.log(fn);
 				fn();
 			});
+		};
+		layout.removeDialog = function (name) {
+			if(_dialogs[name] == undefined)
+				return
+			_dialogs[name].pop();
 		};
 		layout.onSwipeLeft = function (sidenav) { $mdSidenav(sidenav).open(); };
 		layout.onSwipeRight = function (sidenav) { $mdSidenav(sidenav).close(); };
@@ -360,21 +363,14 @@ String.prototype.capitalizeFirstLetter = function () {
 			}
 		});
 	}]);
-	app.controller('homeController', HomeCtrl);
-	HomeCtrl.$inject = ['layout'];
-	function HomeCtrl(layout) {
-		layout.page('Home');
-		var HomeCtrl = this;
-		return HomeCtrl;
-	};
 })();
 (function () {
 	var app = angular.module('app');
 	app.controller('aboutController', aboutCtrl);
 	aboutCtrl.$inject = ['layout'];
 	function aboutCtrl(layout) {
-		layout.page("about");
-		layout.tools("");
+		layout.page('about');
+		layout.tools('');
 	};
 })();
 (function () {
@@ -388,8 +384,8 @@ String.prototype.capitalizeFirstLetter = function () {
 			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
 			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' }
 		];
-		layout.page("account");
-		layout.tools("");
+		layout.page('account');
+		layout.tools('');
 		return AccountCtrl;
 	};
 })();
@@ -399,17 +395,30 @@ String.prototype.capitalizeFirstLetter = function () {
 	faqCtrl.$inject = ['layout'];
 	function faqCtrl(layout) {
 		var faqCtrl = this;
-		layout.page("F.A.Q");
-		layout.tools("");
+		layout.page('F.A.Q');
+		layout.tools('');
 		return faqCtrl;
 	};
 })();
 (function () {
 	var app = angular.module('app');
+	app.controller('homeController', HomeCtrl);
+	HomeCtrl.$inject = ['layout'];
+	function HomeCtrl(layout) {
+		layout.page('dashboard');
+		layout.tools('');
+		var HomeCtrl = this;
+		return HomeCtrl;
+	};
+})();
+(function () {
+	var app = angular.module('app');
 	app.controller('logoutController', LogoutCtrl);
-	LogoutCtrl.$inject = ['$location', 'authentication'];
-	function LogoutCtrl($location, authentication) {
+	LogoutCtrl.$inject = ['$location', 'authentication', 'layout'];
+	function LogoutCtrl($location, authentication, layout) {
 		var LogoutCtrl = this;
+		layout.page('Logout');
+		layout.tools('');
 		authentication.logout();
 		$location.path('/');
 		return LogoutCtrl;
@@ -476,12 +485,12 @@ String.prototype.capitalizeFirstLetter = function () {
 			},
 			{
 				link: '/storage',
-				title: 'Virtual Disks',
+				title: 'storage',
 				icon: 'storage'
 			},
 			{
 				link: '/network',
-				title: 'Network Adapters',
+				title: 'Network',
 				icon: 'public'
 			},
 			// {
@@ -516,7 +525,7 @@ String.prototype.capitalizeFirstLetter = function () {
 	function networkCtrl(layout) {
 		var networkCtrl = this;
 		networkCtrl.selected = [];
-		layout.page('network adapters');
+		layout.page('network');
 		layout.newDialog('networkCreate', function () {
 			console.log('Create new network adapter dialog');
 		});
@@ -552,8 +561,8 @@ String.prototype.capitalizeFirstLetter = function () {
 	SettingsCtrl.$inject = ['datastore', 'layout', 'observer'];
 	function SettingsCtrl(datastore, layout, observer) {
 		var SettingsCtrl = this;
-		layout.page("settings");
-		layout.tools("");
+		layout.page('settings');
+		layout.tools('');
 		SettingsCtrl.save = function (Model, Object) {
 			datastore.update(Model, Object);
 		};
@@ -562,13 +571,29 @@ String.prototype.capitalizeFirstLetter = function () {
 })();
 (function () {
 	var app = angular.module('app');
+	app.controller('storageController', storageCtrl);
+	storageCtrl.$inject = ['layout'];
+	function storageCtrl(layout) {
+		var storageCtrl = this;
+		layout.page('storage');
+		layout.tools('');
+		return storageCtrl;
+	};
+})();
+(function () {
+	var app = angular.module('app');
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
-	function vmCtrl(layout, $mdBottomSheet, $mdToast) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast', '$scope'];
+	function vmCtrl(layout, $mdBottomSheet, $mdToast, $scope) {
 		var vmCtrl = this;
+		// cleanup for the layout service
+		$scope.$on('$destroy', function () {
+			layout.removeDialog('vmCreate');
+			layout.removeDialog('vmCommand');
+		});
 		vmCtrl.selected = [];
 		vmCtrl.vms = [];
-		layout.page("Virtual Machines");
+		layout.page('virtual machines');
 		layout.newDialog('vmCommand', function () {
 			$mdBottomSheet.show({
 				templateUrl: 'views/partials/commandsVM.tmpl.html',

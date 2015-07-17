@@ -5,7 +5,7 @@
 	function networkCtrl(layout) {
 		var networkCtrl = this;
 		networkCtrl.selected = [];
-		layout.page('network adapters');
+		layout.page('network');
 		layout.newDialog('networkCreate', function () {
 			console.log('Create new network adapter dialog');
 		});

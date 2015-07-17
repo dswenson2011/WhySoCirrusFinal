@@ -59,12 +59,12 @@
 			},
 			{
 				link: '/storage',
-				title: 'Virtual Disks',
+				title: 'storage',
 				icon: 'storage'
 			},
 			{
 				link: '/network',
-				title: 'Network Adapters',
+				title: 'Network',
 				icon: 'public'
 			},
 			// {

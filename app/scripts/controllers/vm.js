@@ -1,12 +1,17 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
-	function vmCtrl(layout, $mdBottomSheet, $mdToast) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast', '$scope'];
+	function vmCtrl(layout, $mdBottomSheet, $mdToast, $scope) {
 		var vmCtrl = this;
+		// cleanup for the layout service
+		$scope.$on('$destroy', function () {
+			layout.removeDialog('vmCreate');
+			layout.removeDialog('vmCommand');
+		});
 		vmCtrl.selected = [];
 		vmCtrl.vms = [];
-		layout.page("Virtual Machines");
+		layout.page('virtual machines');
 		layout.newDialog('vmCommand', function () {
 			$mdBottomSheet.show({
 				templateUrl: 'views/partials/commandsVM.tmpl.html',

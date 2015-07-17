@@ -9,13 +9,8 @@ sql.sync();
 server.socket.on('connection', function () {
 	server.socket.emit('notification', {
 		error: false,
-		message: "Connected to update service"
+		message: "client connected"
 	});
-});
-
-// Janky redirect of notification, might be useless keeping enabled until making sure it is useless
-server.socket.on('notification', function (data) {
-	server.socket.emit('notification', data);
 });
 
 server.app.use(require('express').static(__dirname + '/app'));

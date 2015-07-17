@@ -60,7 +60,7 @@
 					<span flex></span>
 					<md-button ng-repeat="tool in main.tools" ng-click="tool.action(tool.params)" class="md-icon-button" aria-label="Create">
 						<ng-md-icon icon="{{ tool.icon }}"></ng-md-icon>
-						<md-tooltip md-direction="{{ tool.tooltip.direction }}">{{ tool.tooltip.message }}</md-tooltip>
+						<md-tooltip md-direction="top">{{ tool.tooltip.message }}</md-tooltip>
 					</md-button>
 				</div>
 			</md-toolbar>

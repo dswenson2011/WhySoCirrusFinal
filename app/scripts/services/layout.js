@@ -17,11 +17,14 @@
 			_dialogs[name].push(fn);
 		};
 		layout.openDialog = function (name) {
-			console.log('open');
 			angular.forEach(_dialogs[name], function (fn) {
-				console.log(fn);
 				fn();
 			});
+		};
+		layout.removeDialog = function (name) {
+			if(_dialogs[name] == undefined)
+				return
+			_dialogs[name].pop();
 		};
 		layout.onSwipeLeft = function (sidenav) { $mdSidenav(sidenav).open(); };
 		layout.onSwipeRight = function (sidenav) { $mdSidenav(sidenav).close(); };
