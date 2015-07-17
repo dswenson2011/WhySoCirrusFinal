@@ -24,7 +24,9 @@
 					});
 				});
 		};
-
+		datastore.create = function (mode, object) {
+			
+		};
 		datastore.update = function (model, object) {
 			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
 				.success(function (data, status, headers, config) {

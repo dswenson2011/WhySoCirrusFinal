@@ -1,6 +1,5 @@
 (function () {
 	var app = angular.module('app');
-
 	app.controller('vmController', vmCtrl);
 	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
 	function vmCtrl(layout, $mdBottomSheet, $mdToast) {
@@ -8,6 +7,14 @@
 		vmCtrl.selected = [];
 		vmCtrl.vms = [];
 		layout.page("Virtual Machines");
+		layout.newDialog('vmCommand', function () {
+			$mdBottomSheet.show({
+				templateUrl: 'views/partials/commandsVM.tmpl.html',
+				controller: bottomCtrl
+			});
+			function bottomCtrl($scope) {
+			};
+		});
 		layout.newDialog('vmCreate', function () {
 			$mdBottomSheet.show({
 				templateUrl: 'views/partials/createVM.tmpl.html',
@@ -44,8 +51,8 @@
 				}
 			},
 			{
-				action: Test,
-				params: vmCtrl.selected,
+				action: layout.openDialog,
+				params: 'vmCommand',
 				icon: "description",
 				tooltip: {
 					message: "View VM",
