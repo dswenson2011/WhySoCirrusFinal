@@ -24,8 +24,18 @@
 					});
 				});
 		};
-		datastore.create = function (mode, object) {
-			
+		datastore.create = function (model, object) {
+			$http.post('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
+				.success(function (data, status, headers, config) {
+					modelStorage[model + data.id] = data.object;
+					observer.notify('datastore');
+				})
+				.error(function (err) {
+					$rootScope.$broadcast('notifcation', {
+						error: true,
+						message: "Model " + err
+					});
+				});
 		};
 		datastore.update = function (model, object) {
 			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })

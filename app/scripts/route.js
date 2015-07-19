@@ -7,11 +7,9 @@
 			.when('/account', secureRouteOption('account', true))
 			.when('/faq', routeOption('faq'))
 			.when('/logout', routeOption('logout'))
-			.when('/messages', secureRouteOption('messages', false))
 			.when('/network', secureRouteOption('network', true))
 			.when('/settings', secureRouteOption('settings', true))
 			.when('/storage', secureRouteOption('storage', true))
-			.when('/tasks', secureRouteOption('tasks', false))
 			.when('/vm', secureRouteOption('vm', true));
 	}]);
 	function routeOption(route) {

@@ -3,19 +3,19 @@
 		<md-card-content>
 			<md-data-table-container>
 				<table md-data-table md-row-select="vm.selected">
-					<thead md-order="name" md-trigger="onOrderChange">
+					<thead md-order="name">
 						<tr>
 							<th order-by="name">Name</th>
-							<th>Operating System</th>
+							<th order-by="operatingSystem">Operating System</th>
 							<th>Network</th>
-							<th>Status</th>
+							<th order-by="status">Status</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="vmItem in vm.vms | orderBy: action">
 							<td>{{vmItem.name}}</td>
-							<td>{{vmItem.os}}</td>
-							<td>{{vmItem.network}}</td>
+							<td>{{vmItem.operatingSystem}}</td>
+							<td>{{vmItem.networkAdapter}}</td>
 							<td>{{vmItem.status}}</td>
 						</tr>
 					</tbody>

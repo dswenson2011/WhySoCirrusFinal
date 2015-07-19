@@ -4,7 +4,6 @@
 	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast', '$scope'];
 	function vmCtrl(layout, $mdBottomSheet, $mdToast, $scope) {
 		var vmCtrl = this;
-		// cleanup for the layout service
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('vmCreate');
 			layout.removeDialog('vmCommand');
@@ -25,14 +24,16 @@
 				templateUrl: 'views/partials/createVM.tmpl.html',
 				controller: bottomCtrl
 			});
-			function bottomCtrl($scope) {
+			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			function bottomCtrl($scope, virtualMachine) {
 				$scope.launch = function (vm) {
-					if (vm.name == undefined || vm.os == undefined || vm.network == undefined) {
+					if (vm.name == undefined || vm.operatingSystem == undefined || vm.networkAdapter == undefined) {
 						$mdToast.show($mdToast.simple({
 							content: 'Warning items are missing!'
 						}));
 						return;
 					}
+					virtualMachine.launch(vm);
 					vm.status = 'OFF';
 					vmCtrl.vms.push(vm);
 					$mdBottomSheet.hide();

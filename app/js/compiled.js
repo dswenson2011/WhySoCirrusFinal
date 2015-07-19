@@ -50,11 +50,9 @@ String.prototype.capitalizeFirstLetter = function () {
 			.when('/account', secureRouteOption('account', true))
 			.when('/faq', routeOption('faq'))
 			.when('/logout', routeOption('logout'))
-			.when('/messages', secureRouteOption('messages', false))
 			.when('/network', secureRouteOption('network', true))
 			.when('/settings', secureRouteOption('settings', true))
 			.when('/storage', secureRouteOption('storage', true))
-			.when('/tasks', secureRouteOption('tasks', false))
 			.when('/vm', secureRouteOption('vm', true));
 	}]);
 	function routeOption(route) {
@@ -242,8 +240,18 @@ String.prototype.capitalizeFirstLetter = function () {
 					});
 				});
 		};
-		datastore.create = function (mode, object) {
-			
+		datastore.create = function (model, object) {
+			$http.post('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
+				.success(function (data, status, headers, config) {
+					modelStorage[model + data.id] = data.object;
+					observer.notify('datastore');
+				})
+				.error(function (err) {
+					$rootScope.$broadcast('notifcation', {
+						error: true,
+						message: "Model " + err
+					});
+				});
 		};
 		datastore.update = function (model, object) {
 			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
@@ -262,18 +270,6 @@ String.prototype.capitalizeFirstLetter = function () {
 				});
 		};
 		return datastore;
-	};
-})();
-(function () {
-	var app = angular.module('app.hyperv', ['app.core']);
-	app.service('hyperv', hyperv);
-	hyperv.$inject = ['observer'];
-	function hyperv(observer) {
-		var hyperv = this;
-		hyperv.launch = function (vm) {
-			
-		};
-		return hyperv;
 	};
 })();
 (function () {
@@ -325,7 +321,20 @@ String.prototype.capitalizeFirstLetter = function () {
 	}]);
 })();
 (function () {
-	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes']);
+	var app = angular.module('app.virtualMachine', ['app.core']);
+	app.service('virtualMachine', virtualMachine);
+	virtualMachine.$inject = ['observer', 'datastore', 'authentication', 'layout', '$http'];
+	function virtualMachine(observer, datastore, authentication, layout, $http) {
+		var virtualMachine = this;
+		virtualMachine.launch = function (vm) {
+			datastore.create('virtualMachine', vm);
+			console.log(vm);
+		};
+		return virtualMachine;
+	};
+})();
+(function () {
+	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes', 'app.virtualMachine']);
 	app.run(['authentication', function (authentication) {
 		if (authentication.token() === undefined)
 			authentication.loadToken();
@@ -586,7 +595,6 @@ String.prototype.capitalizeFirstLetter = function () {
 	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast', '$scope'];
 	function vmCtrl(layout, $mdBottomSheet, $mdToast, $scope) {
 		var vmCtrl = this;
-		// cleanup for the layout service
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('vmCreate');
 			layout.removeDialog('vmCommand');
@@ -607,14 +615,16 @@ String.prototype.capitalizeFirstLetter = function () {
 				templateUrl: 'views/partials/createVM.tmpl.html',
 				controller: bottomCtrl
 			});
-			function bottomCtrl($scope) {
+			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			function bottomCtrl($scope, virtualMachine) {
 				$scope.launch = function (vm) {
-					if (vm.name == undefined || vm.os == undefined || vm.network == undefined) {
+					if (vm.name == undefined || vm.operatingSystem == undefined || vm.networkAdapter == undefined) {
 						$mdToast.show($mdToast.simple({
 							content: 'Warning items are missing!'
 						}));
 						return;
 					}
+					virtualMachine.launch(vm);
 					vm.status = 'OFF';
 					vmCtrl.vms.push(vm);
 					$mdBottomSheet.hide();
