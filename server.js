@@ -20,7 +20,7 @@ server.app.get('/VMs', function (req, res) {
 		.func('ps', function () {
 			/*
 			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "W3ntw0rth@boston" -AsPlainText -Force))
-			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
+			$s = New-PSSession -ComputerName 69.43.72.131 -Credential $credential
 			function a(){Get-VM|ConvertTo-JSON}
 			Invoke-Command -Session $s -ScriptBlock ${function:a}
 			Remove-PSSession $s
