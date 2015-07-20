@@ -15,7 +15,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="log in account.logs | orderBy: action">
+						<tr ng-repeat="log in account.logs | orderBy: action | filter: account.filter  | limitTo: account.query.limit">
 							<td>{{ log.action }}</td>
 							<td>{{ log.item }}</td>
 							<td>{{ log.date }}</td>
@@ -24,6 +24,15 @@
 					</tbody>
 				</table>
 			</md-data-table-container>
+			<div class="md-actions" layout layout-sm="row" layout-align="end center">
+				<md-data-table-pagination md-label="{'text':'Items per page'}" md-limit="account.query.limit" md-page="account.query.page" md-total="{{account.logs.length}}"></md-data-table-pagination>
+			</div>
+		</md-card-content>
+	</md-card>
+	<md-card flex-gt-sm="90" flex-gt-md="80">
+		<md-card-content>
+			<h2 class="md-title">Associated Groups</h2>
+			<md-chips ng-model="main.user.groupList" readonly="true"></md-chips>
 		</md-card-content>
 	</md-card>
 </md-content>

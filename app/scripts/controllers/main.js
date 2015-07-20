@@ -1,9 +1,12 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('MainController', mainCtrl);
-	mainCtrl.$inject = ['authentication', 'datastore', 'layout', '$location', '$scope', 'observer'];
-	function mainCtrl(authentication, datastore, layout, $location, $scope, observer) {
+	mainCtrl.$inject = ['authentication', 'datastore', 'layout', '$location', 'md5', '$scope', 'observer'];
+	function mainCtrl(authentication, datastore, layout, $location, md5, $scope, observer) {
 		var mainCtrl = this;
+		mainCtrl.hash = function (item) {
+			return md5.createHash(item || '');
+		};
 		var userID;
 		observer.register('authentication', function () {
 			userID = authentication.id();
@@ -11,6 +14,13 @@
 		});
 		observer.register('datastore', function () {
 			mainCtrl.user = datastore.storageLoad('User', userID);
+			mainCtrl.user.groupList = function (input) {
+				var newInput = [];
+				angular.forEach(input, function (item) {
+					if (item != "") newInput.push(item);
+				});
+				return newInput;
+			} (mainCtrl.user.groupList);
 			if (mainCtrl.user.groupList == 'guest') {
 				$scope.$emit('notification', { error: true, message: "You are on a guest account" });
 			}

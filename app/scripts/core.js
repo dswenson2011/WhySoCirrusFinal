@@ -1,10 +1,19 @@
 (function () {
-	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io', 'md.data.table']);
+	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'angular-md5', 'btford.socket-io', 'md.data.table']);
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
 			.primaryPalette('teal')
 			.accentPalette('blue-grey');
 	}]);
+	app.filter('arrayFilter', function () {
+		return function (input) {
+			var newInput = [];
+			angular.forEach(input, function (item) {
+				if (item != "") newInput.push(item);
+			});
+			return newInput;
+		};
+	});
 	app.factory('socket', ['socketFactory', function (socketFactory) {
 		return socketFactory();
 	}]);

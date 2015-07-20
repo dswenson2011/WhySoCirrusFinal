@@ -36,6 +36,11 @@
 				<div ng-if="main._authenticated">
 					<md-divider></md-divider>
 					<md-list layout-padding>
+						<md-list-item>
+							<md-card>
+								<img ng-src="http://www.gravatar.com/avatar/{{main.hash(main.user.avatar)}}?s=2048&d=mm" class="md-card-image">
+							</md-card>
+						</md-list-item>
 						<md-list-item ng-repeat="item in main.managementMenu" ng-click="main.traverse(item.link)">
 							<a>
 						<md-item-content md-ink-ripple layout="row" layout-align="start center">
@@ -74,6 +79,7 @@
 		<script src="./bower_components/angular-aria/angular-aria.min.js"></script>
 		<script src="./bower_components/angular-material/angular-material.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.5.0/angular-material-icons.min.js"></script>
+		<script src="./bower_components/angular-md5/angular-md5.js"></script>
 		<script src="./bower_components/angular-messages/angular-messages.min.js"></script>
 		<script src="./bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
 		<script src="./bower_components/angular-route/angular-route.min.js"></script>

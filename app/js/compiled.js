@@ -2,12 +2,21 @@ String.prototype.capitalizeFirstLetter = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 (function () {
-	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'btford.socket-io', 'md.data.table']);
+	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'angular-md5', 'btford.socket-io', 'md.data.table']);
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
 			.primaryPalette('teal')
 			.accentPalette('blue-grey');
 	}]);
+	app.filter('arrayFilter', function () {
+		return function (input) {
+			var newInput = [];
+			angular.forEach(input, function (item) {
+				if (item != "") newInput.push(item);
+			});
+			return newInput;
+		};
+	});
 	app.factory('socket', ['socketFactory', function (socketFactory) {
 		return socketFactory();
 	}]);
@@ -385,10 +394,39 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('accountController', AccountCtrl);
-	AccountCtrl.$inject = ['datastore', 'layout', 'observer'];
-	function AccountCtrl(datastore, layout, observer) {
+	AccountCtrl.$inject = ['authentication', 'datastore', 'layout', 'observer'];
+	function AccountCtrl(authentication, datastore, layout, observer) {
 		var AccountCtrl = this;
+		AccountCtrl.query = {
+			order: 'name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		AccountCtrl.filter = function (item, index) {
+			return index >= (AccountCtrl.query.limit * (AccountCtrl.query.page - 1));
+		};
 		AccountCtrl.logs = [
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
+			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
 			{ action: 'Create', item: 'Test VM', date: 'Mon Sep 28 1998 14:36:22 GMT-0700', result: 'OK' },
 			{ action: 'Create', item: 'Test VM 3', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' },
 			{ action: 'Create', item: 'Test VM 2', date: 'Mon Sep 28 1999 14:36:22 GMT-0700', result: 'OK' }
@@ -436,9 +474,12 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('MainController', mainCtrl);
-	mainCtrl.$inject = ['authentication', 'datastore', 'layout', '$location', '$scope', 'observer'];
-	function mainCtrl(authentication, datastore, layout, $location, $scope, observer) {
+	mainCtrl.$inject = ['authentication', 'datastore', 'layout', '$location', 'md5', '$scope', 'observer'];
+	function mainCtrl(authentication, datastore, layout, $location, md5, $scope, observer) {
 		var mainCtrl = this;
+		mainCtrl.hash = function (item) {
+			return md5.createHash(item || '');
+		};
 		var userID;
 		observer.register('authentication', function () {
 			userID = authentication.id();
@@ -446,6 +487,13 @@ String.prototype.capitalizeFirstLetter = function () {
 		});
 		observer.register('datastore', function () {
 			mainCtrl.user = datastore.storageLoad('User', userID);
+			mainCtrl.user.groupList = function (input) {
+				var newInput = [];
+				angular.forEach(input, function (item) {
+					if (item != "") newInput.push(item);
+				});
+				return newInput;
+			} (mainCtrl.user.groupList);
 			if (mainCtrl.user.groupList == 'guest') {
 				$scope.$emit('notification', { error: true, message: "You are on a guest account" });
 			}
