@@ -61,15 +61,12 @@ server.app.get('/test', function (req, res) {
 });
 
 server.app.post('/githubHook', function (req, res) {
-	var ps = require('edge').func('ps', function () {
+	require('edge').func('ps', function () {
 		/*
 			cd C:\Users\Administrator\Desktop\Node\WhySoCirrusFinal
 			git pull
 		*/
-	});
-	ps('', function (err, result) {
-		//console.log(result);
-	});
+	})('', function (err, result) { });
 	res.sendStatus(200);
 });
 
