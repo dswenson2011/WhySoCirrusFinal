@@ -33,8 +33,9 @@ server.app.get('/VMs', function (req, res) {
 });
 
 server.app.get('/test', function (req, res) {
-	// { 'path': 'C:\\VHDS\\Test10.vhdx', 'name': 'Test10', 'ram': '2147483648','hardDrive': '8589934592'}
-	var object = { 'path': 'C:\\VHDS\\' + req.query.name + '.vhdx', 'name': '' + req.query.name + '', 'ram': '2147483648', 'hardDrive': '8589934592' };
+	// { 'path': 'D:\\VHDS\\ChainTest.vhdx', 'name': 'Test10', 'ram': '2147483648','hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso'}
+	//Filter name to remove stuff that ntfs doesn't like
+	var object = { 'path': 'D:\\VHDS\\' + req.query.name + '.vhdx', 'name': '' + req.query.name + '', 'ram': '2147483648', 'hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso' };
 	console.log(object);
 	require('edge')
 		.func('ps', function () {
@@ -42,15 +43,20 @@ server.app.get('/test', function (req, res) {
 			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "W3ntw0rth@boston" -AsPlainText -Force))
 			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
 			$object =  ${inputFromJS} | ConvertFrom-Json
-			$object
 			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; New-VM –Name $input.name –MemoryStartupBytes $input.ram –NewVHDPath $input.path -NewVHDSizeBytes $input.hardDrive | ConvertTo-JSON}
+			Invoke-Command -Session $s -ScriptBlock ${function:a} -inputObject ${object}
+			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; Connect-VMNetworkAdapter -VMName $input.name  -Name  'Network Adapter'  -SwitchName $input.network | ConvertTo-JSON}
+			Invoke-Command -Session $s -ScriptBlock ${function:a} -inputObject ${object}
+			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; Add-VMDvdDrive -VMName $input.name -Path $input.os | ConvertTo-JSON}
+			Invoke-Command -Session $s -ScriptBlock ${function:a} -inputObject ${object}
+			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; Start-VM -Name $input.name | ConvertTo-JSON}
 			Invoke-Command -Session $s -ScriptBlock ${function:a} -inputObject ${object}
 			Remove-PSSession $s
 			*/
 		})(JSON.stringify(object), function (error, result) {
 			console.log(error);
 			console.log(result);
-			res.json(JSON.parse(result));
+			res.send(JSON.parse(result));
 		}, true);
 });
 

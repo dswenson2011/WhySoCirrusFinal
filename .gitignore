@@ -6,3 +6,4 @@ app/bower_components
 app/js/compiled.js
 app/js/compiled.min.js
 log
+tasks.json
