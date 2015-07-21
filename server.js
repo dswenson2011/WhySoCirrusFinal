@@ -19,7 +19,7 @@ server.app.get('/VMs', function (req, res) {
 	require('edge')
 		.func('ps', function () {
 			/*
-			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "W3ntw0rth@boston" -AsPlainText -Force))
+			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "" -AsPlainText -Force))
 			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
 			function a(){Get-VM|ConvertTo-JSON}
 			Invoke-Command -Session $s -ScriptBlock ${function:a}
@@ -40,7 +40,7 @@ server.app.get('/test', function (req, res) {
 	require('edge')
 		.func('ps', function () {
 			/*
-			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "W3ntw0rth@boston" -AsPlainText -Force))
+			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "" -AsPlainText -Force))
 			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
 			$object =  ${inputFromJS} | ConvertFrom-Json
 			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; New-VM –Name $input.name –MemoryStartupBytes $input.ram –NewVHDPath $input.path -NewVHDSizeBytes $input.hardDrive | ConvertTo-JSON}
