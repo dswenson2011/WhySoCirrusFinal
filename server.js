@@ -33,8 +33,7 @@ server.app.get('/VMs', function (req, res) {
 });
 
 server.app.get('/test', function (req, res) {
-	// { 'path': 'D:\\VHDS\\ChainTest.vhdx', 'name': 'Test10', 'ram': '2147483648','hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso'}
-	//Filter name to remove stuff that ntfs doesn't like
+
 	var object = { 'password': require('./.nodeConfig.json').password, 'path': 'D:\\VHDS\\' + req.query.name + '.vhdx', 'name': '' + req.query.name + '', 'ram': '2147483648', 'hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso' };
 	console.log(object);
 	require('edge')

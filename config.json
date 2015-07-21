@@ -1,0 +1,23 @@
+{
+	"host": {
+		"host": "peter.dell.whysocirr.us",
+		"password": "W3ntw0rth@boston"
+	},
+	"redis":{
+		"host": "db.whysocirr.us",
+		"password": "489cc896-b7c8-43ca-bd8b-23dd9c6c7f8b"
+	},
+	"sql": {
+		"host": "db.whysocirr.us",
+		"dialect": "mysql",
+		"database": "WhySoCirrus",
+		"username": "WhySoCirrus",
+		"password": "W3ntw0rth@boston"
+	},
+	"ldap": {
+		"url": "ldap://david.dell.whysocirr.us/DC=domware,DC=swensond,DC=com",
+		"base": "DC=domware,DC=swensond,DC=com",
+		"bindDN": "whysocirrus@domware.swensond.com",
+		"bindCredentials": "W3ntw0rth@boston_wsc"
+	}
+}
