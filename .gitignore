@@ -1,9 +1,9 @@
 lib/configs/.ldapConfig.json
 lib/configs/.sqlConfig.json
+app/js/compiled.js
+app/js/compiled.min.js
+tasks.json
+log
 node_modules
 typings
 app/bower_components
-app/js/compiled.js
-app/js/compiled.min.js
-log
-tasks.json
