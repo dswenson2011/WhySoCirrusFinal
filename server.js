@@ -19,13 +19,13 @@ server.app.get('/VMs', function (req, res) {
 	require('edge')
 		.func('ps', function () {
 			/*
-			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "" -AsPlainText -Force))
+			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "${InputFromJS}" -AsPlainText -Force))
 			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
 			function a(){Get-VM|ConvertTo-JSON}
 			Invoke-Command -Session $s -ScriptBlock ${function:a}
 			Remove-PSSession $s
 			*/
-		})('', function (error, result) {
+		})(require('./.nodeConfig.json').password, function (error, result) {
 			console.log(error);
 			console.log(result);
 			res.json(JSON.parse(result));
@@ -35,14 +35,14 @@ server.app.get('/VMs', function (req, res) {
 server.app.get('/test', function (req, res) {
 	// { 'path': 'D:\\VHDS\\ChainTest.vhdx', 'name': 'Test10', 'ram': '2147483648','hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso'}
 	//Filter name to remove stuff that ntfs doesn't like
-	var object = { 'path': 'D:\\VHDS\\' + req.query.name + '.vhdx', 'name': '' + req.query.name + '', 'ram': '2147483648', 'hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso' };
+	var object = { 'password': require('./.nodeConfig.json').password, 'path': 'D:\\VHDS\\' + req.query.name + '.vhdx', 'name': '' + req.query.name + '', 'ram': '2147483648', 'hardDrive': '8589934592', 'network': 'ExternalSwitch', 'os': 'C:\\isos\\windowsDesktop.iso' };
 	console.log(object);
 	require('edge')
 		.func('ps', function () {
 			/*
-			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "" -AsPlainText -Force))
-			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
 			$object =  ${inputFromJS} | ConvertFrom-Json
+			$credential = New-Object System.Management.Automation.PsCredential("domware\Administrator", (ConvertTo-SecureString "${object.password}" -AsPlainText -Force))
+			$s = New-PSSession -ComputerName peter.dell.whysocirr.us -Credential $credential
 			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; New-VM –Name $input.name –MemoryStartupBytes $input.ram –NewVHDPath $input.path -NewVHDSizeBytes $input.hardDrive | ConvertTo-JSON}
 			Invoke-Command -Session $s -ScriptBlock ${function:a} -inputObject ${object}
 			function a($input){$input = $input | ConvertTo-Json | ConvertFrom-Json; Connect-VMNetworkAdapter -VMName $input.name  -Name  'Network Adapter'  -SwitchName $input.network | ConvertTo-JSON}

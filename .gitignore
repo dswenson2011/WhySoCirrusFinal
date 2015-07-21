@@ -7,3 +7,4 @@ log
 node_modules
 typings
 app/bower_components
+.nodeConfig.json
