@@ -1,0 +1,28 @@
+<md-bottom-sheet ng-init="vhd = {size:16}">
+	<h2 class="md-title">Create Virtual Disk</h2>
+	<md-input-container>
+		<label>Virtual Disk Name</label>
+		<input ng-model="vhd.name" type="text" required>
+	</md-input-container>
+	<div layout flex>
+		<div flex="20" layout layout-align="start center">
+			<span class="md-body-1">Base Operating System</span>
+		</div>
+		<md-select placeholder="Operating System" ng-model="vhd.operatingSystem" required>
+			<md-option value="windowsDesktop">Windows Desktop</md-option>
+			<md-option value="windowsServer">Windows Server</md-option>
+			<md-option value="centos">CentOS Server</md-option>
+			<md-option value="ubuntu">Ubuntu Server</md-option>
+		</md-select>
+	</div>
+	<div layout flex>
+		<div flex="20" layout layout-align="start center">
+			<span class="md-body-1">Drive Size (GB)</span>
+		</div>
+		<md-slider class="md-primary" flex md-discrete ng-model="vhd.size" step="8" min="8" max="256" aria-label="GB"></md-slider>
+	</div>
+	<div class="md-actions" layout layout-sm="row" layout-align="end center">
+		<md-button class="md-raised md-primary" ng-click="launch(vhd)">Create</md-button>
+		<md-button class="md-warn" ng-click="close()">Cancel</md-button>
+	</div>
+</md-bottom-sheet>

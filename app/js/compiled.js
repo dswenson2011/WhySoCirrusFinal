@@ -5,7 +5,7 @@ String.prototype.capitalizeFirstLetter = function () {
 	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'angular-md5', 'btford.socket-io', 'md.data.table']);
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
-			.primaryPalette('teal')
+			.primaryPalette('deep-purple')
 			.accentPalette('blue-grey');
 	}]);
 	app.filter('arrayFilter', function () {
@@ -61,7 +61,7 @@ String.prototype.capitalizeFirstLetter = function () {
 			.when('/logout', routeOption('logout'))
 			.when('/network', secureRouteOption('network', true))
 			.when('/settings', secureRouteOption('settings', true))
-			.when('/storage', secureRouteOption('storage', true))
+			.when('/storage', secureRouteOption('storage'))
 			.when('/vm', secureRouteOption('vm', true));
 	}]);
 	function routeOption(route) {
@@ -224,10 +224,10 @@ String.prototype.capitalizeFirstLetter = function () {
 	}
 })();
 (function () {
-	var app = angular.module('app.datastore', ['app.core', 'app.authentication']);
+	var app = angular.module('app.datastore', ['app.core']);
 	app.service('datastore', datastore);
-	datastore.$inject = ['$http', 'observer', '$rootScope', 'authentication', 'socket'];
-	function datastore($http, observer, $rootScope, authentication, socket) {
+	datastore.$inject = ['$http', 'observer', '$rootScope', 'socket'];
+	function datastore($http, observer, $rootScope, socket) {
 		var datastore = this;
 		var modelStorage = [];
 		socket.on('updatedModel', function (data) {
@@ -249,8 +249,8 @@ String.prototype.capitalizeFirstLetter = function () {
 					});
 				});
 		};
-		datastore.create = function (model, object) {
-			$http.post('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
+		datastore.create = function (model, object, token) {
+			$http.post('/api/' + model.capitalizeFirstLetter(), { object: object, token: token })
 				.success(function (data, status, headers, config) {
 					modelStorage[model + data.id] = data.object;
 					observer.notify('datastore');
@@ -262,8 +262,8 @@ String.prototype.capitalizeFirstLetter = function () {
 					});
 				});
 		};
-		datastore.update = function (model, object) {
-			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
+		datastore.update = function (model, object, token) {
+			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: token })
 				.success(function (data, status, headers, config) {
 					datastore.get(model, object.id);
 					$rootScope.$broadcast('notification', {
@@ -332,14 +332,37 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app.virtualMachine', ['app.core']);
 	app.service('virtualMachine', virtualMachine);
-	virtualMachine.$inject = ['observer', 'datastore', 'authentication', 'layout', '$http'];
-	function virtualMachine(observer, datastore, authentication, layout, $http) {
+	virtualMachine.$inject = ['observer', '$http'];
+	function virtualMachine(observer, $http) {
 		var virtualMachine = this;
-		virtualMachine.launch = function (vm) {
-			datastore.create('virtualMachine', vm);
-			console.log(vm);
+		virtualMachine.launch = function (vm, token) {
+			$http.post('/api/vm/launch', { vm: vm, token: token })
+				.success(function (data, status, headers, config) {
+
+				})
+				.error(function (error) {
+
+				});
 		};
 		return virtualMachine;
+	};
+})();
+(function () {
+	var app = angular.module('app.virtualSwitch', ['app.core']);
+	app.service('virtualSwitch', virtualSwitch);
+	virtualSwitch.$inject = ['observer', '$http'];
+	function virtualSwitch(observer, $http) {
+		var virtualSwitch = this;
+		virtualSwitch.launch = function (vs, token) {
+			$http.post('/api/vs/launch', { vs: vs, token: token })
+				.success(function (data, status, headers, config) {
+					
+				})
+				.error(function (error) {
+
+				});
+		};
+		return virtualSwitch;
 	};
 })();
 (function () {
@@ -578,16 +601,36 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
-	networkCtrl.$inject = ['layout'];
-	function networkCtrl(layout) {
+	networkCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
+	function networkCtrl(layout, $mdBottomSheet, $mdToast) {
 		var networkCtrl = this;
 		networkCtrl.selected = [];
 		layout.page('network');
 		layout.newDialog('networkCreate', function () {
-			console.log('Create new network adapter dialog');
+			$mdBottomSheet.show({
+				templateUrl: 'views/partials/createVS.tmpl.html',
+				controller: bottomCtrl
+			});
+			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			function bottomCtrl($scope, virtualSwitch) {
+				$scope.launch = function (vs) {
+					if (vs.name == undefined || vs.type == undefined) {
+						$mdToast.show($mdToast.simple({
+							content: 'Warning items are missing!'
+						}));
+						return;
+					}
+					virtualSwitch.launch(vs);
+					networkCtrl.vss.push(vs);
+					$mdBottomSheet.hide();
+				};
+				$scope.close = function () {
+					$mdBottomSheet.hide();
+				};
+			};
 		});
 		layout.newDialog('networkDelete', function () {
-			console.log('Delete selected network adapter dialog');
+			console.log('Delete selected network switch dialog');
 		});
 		layout.tools([
 			{
@@ -595,7 +638,7 @@ String.prototype.capitalizeFirstLetter = function () {
 				params: 'networkCreate',
 				icon: "add",
 				tooltip: {
-					message: "Create new network adapter",
+					message: "Create new network switch",
 					direction: "left"
 				}
 			},
@@ -604,7 +647,7 @@ String.prototype.capitalizeFirstLetter = function () {
 				params: 'networkDelete',
 				icon: "delete",
 				tooltip: {
-					message: "Delete network adapter",
+					message: "Delete network switch",
 					direction: "left"
 				}
 			}
@@ -615,13 +658,13 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('settingsController', SettingsCtrl);
-	SettingsCtrl.$inject = ['datastore', 'layout', 'observer'];
-	function SettingsCtrl(datastore, layout, observer) {
+	SettingsCtrl.$inject = ['authentication', 'datastore', 'layout', 'observer'];
+	function SettingsCtrl(authentication, datastore, layout, observer) {
 		var SettingsCtrl = this;
 		layout.page('settings');
 		layout.tools('');
 		SettingsCtrl.save = function (Model, Object) {
-			datastore.update(Model, Object);
+			datastore.update(Model, Object, authentication.token());
 		};
 		return SettingsCtrl;
 	};
@@ -629,11 +672,56 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('storageController', storageCtrl);
-	storageCtrl.$inject = ['layout'];
-	function storageCtrl(layout) {
+	storageCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
+	function storageCtrl(layout, $mdBottomSheet, $mdToast) {
 		var storageCtrl = this;
 		layout.page('storage');
-		layout.tools('');
+		layout.newDialog('storageCreate', function () {
+			$mdBottomSheet.show({
+				templateUrl: 'views/partials/createVD.tmpl.html',
+				controller: bottomCtrl
+			});
+			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			function bottomCtrl($scope, virtualDisk) {
+				$scope.launch = function (vhd) {
+					if (vhd.name == undefined || vhd.operatingSystem == undefined) {
+						$mdToast.show($mdToast.simple({
+							content: 'Warning items are missing!'
+						}));
+						return;
+					}
+					virtualDisk.launch(vhd);
+					storageCtrl.vhd.push(vhd);
+					$mdBottomSheet.hide();
+				};
+				$scope.close = function () {
+					$mdBottomSheet.hide();
+				};
+			};
+		});
+		layout.newDialog('storageDelete', function () {
+			console.log('Delete selected storage disk dialog');
+		});
+		layout.tools([
+			{
+				action: layout.openDialog,
+				params: 'storageCreate',
+				icon: "add",
+				tooltip: {
+					message: "Create new storage disk",
+					direction: "left"
+				}
+			},
+			{
+				action: layout.openDialog,
+				params: 'storageDelete',
+				icon: "delete",
+				tooltip: {
+					message: "Delete storage disk",
+					direction: "left"
+				}
+			}
+		]);
 		return storageCtrl;
 	};
 })();
@@ -663,8 +751,8 @@ String.prototype.capitalizeFirstLetter = function () {
 				templateUrl: 'views/partials/createVM.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
-			function bottomCtrl($scope, virtualMachine) {
+			bottomCtrl.$inject = ['$scope', 'virtualMachine', 'authentication'];
+			function bottomCtrl($scope, virtualMachine, authentication) {
 				$scope.launch = function (vm) {
 					if (vm.name == undefined || vm.operatingSystem == undefined || vm.networkAdapter == undefined) {
 						$mdToast.show($mdToast.simple({
@@ -672,9 +760,7 @@ String.prototype.capitalizeFirstLetter = function () {
 						}));
 						return;
 					}
-					virtualMachine.launch(vm);
-					vm.status = 'OFF';
-					vmCtrl.vms.push(vm);
+					virtualMachine.launch(vm, authentication.token());
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {
@@ -692,15 +778,6 @@ String.prototype.capitalizeFirstLetter = function () {
 				icon: "add",
 				tooltip: {
 					message: "Create new VM",
-					direction: "left"
-				}
-			},
-			{
-				action: layout.openDialog,
-				params: 'vmCommand',
-				icon: "description",
-				tooltip: {
-					message: "View VM",
 					direction: "left"
 				}
 			},

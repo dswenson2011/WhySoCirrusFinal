@@ -2,7 +2,7 @@
 	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'angular-md5', 'btford.socket-io', 'md.data.table']);
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
-			.primaryPalette('teal')
+			.primaryPalette('deep-purple')
 			.accentPalette('blue-grey');
 	}]);
 	app.filter('arrayFilter', function () {

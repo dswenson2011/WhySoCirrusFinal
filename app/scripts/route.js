@@ -9,7 +9,7 @@
 			.when('/logout', routeOption('logout'))
 			.when('/network', secureRouteOption('network', true))
 			.when('/settings', secureRouteOption('settings', true))
-			.when('/storage', secureRouteOption('storage', true))
+			.when('/storage', secureRouteOption('storage'))
 			.when('/vm', secureRouteOption('vm', true));
 	}]);
 	function routeOption(route) {

@@ -24,8 +24,8 @@
 				templateUrl: 'views/partials/createVM.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
-			function bottomCtrl($scope, virtualMachine) {
+			bottomCtrl.$inject = ['$scope', 'virtualMachine', 'authentication'];
+			function bottomCtrl($scope, virtualMachine, authentication) {
 				$scope.launch = function (vm) {
 					if (vm.name == undefined || vm.operatingSystem == undefined || vm.networkAdapter == undefined) {
 						$mdToast.show($mdToast.simple({
@@ -33,9 +33,7 @@
 						}));
 						return;
 					}
-					virtualMachine.launch(vm);
-					vm.status = 'OFF';
-					vmCtrl.vms.push(vm);
+					virtualMachine.launch(vm, authentication.token());
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {
@@ -53,15 +51,6 @@
 				icon: "add",
 				tooltip: {
 					message: "Create new VM",
-					direction: "left"
-				}
-			},
-			{
-				action: layout.openDialog,
-				params: 'vmCommand',
-				icon: "description",
-				tooltip: {
-					message: "View VM",
 					direction: "left"
 				}
 			},

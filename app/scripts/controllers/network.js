@@ -1,16 +1,36 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
-	networkCtrl.$inject = ['layout'];
-	function networkCtrl(layout) {
+	networkCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
+	function networkCtrl(layout, $mdBottomSheet, $mdToast) {
 		var networkCtrl = this;
 		networkCtrl.selected = [];
 		layout.page('network');
 		layout.newDialog('networkCreate', function () {
-			console.log('Create new network adapter dialog');
+			$mdBottomSheet.show({
+				templateUrl: 'views/partials/createVS.tmpl.html',
+				controller: bottomCtrl
+			});
+			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			function bottomCtrl($scope, virtualSwitch) {
+				$scope.launch = function (vs) {
+					if (vs.name == undefined || vs.type == undefined) {
+						$mdToast.show($mdToast.simple({
+							content: 'Warning items are missing!'
+						}));
+						return;
+					}
+					virtualSwitch.launch(vs);
+					networkCtrl.vss.push(vs);
+					$mdBottomSheet.hide();
+				};
+				$scope.close = function () {
+					$mdBottomSheet.hide();
+				};
+			};
 		});
 		layout.newDialog('networkDelete', function () {
-			console.log('Delete selected network adapter dialog');
+			console.log('Delete selected network switch dialog');
 		});
 		layout.tools([
 			{
@@ -18,7 +38,7 @@
 				params: 'networkCreate',
 				icon: "add",
 				tooltip: {
-					message: "Create new network adapter",
+					message: "Create new network switch",
 					direction: "left"
 				}
 			},
@@ -27,7 +47,7 @@
 				params: 'networkDelete',
 				icon: "delete",
 				tooltip: {
-					message: "Delete network adapter",
+					message: "Delete network switch",
 					direction: "left"
 				}
 			}

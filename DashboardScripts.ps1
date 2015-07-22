@@ -32,3 +32,8 @@ $s = New-PSSession -ComputerName "" -Credential $credential
 function a(){Get-CimInstance -ClassName win32_operatingsystem | select LastBootUpTime,LocalDateTime  | ConvertTo-JSON}
 Invoke-Command -Session $s -ScriptBlock ${function:a}
 Remove-PSSession $s
+
+
+
+# Create VHD and mount then init, partition, format, demount
+New-VHD -Path $vhdpath -Dynamic -SizeBytes $vhdsize | Mount-VHD -Passthru |Initialize-Disk -Passthru |New-Partition -AssignDriveLetter -UseMaximumSize |Format-Volume -FileSystem NTFS -Confirm:$false -Force;Dismount-VHD -Path $vhdpath

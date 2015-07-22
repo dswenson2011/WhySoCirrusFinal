@@ -1,0 +1,18 @@
+<md-bottom-sheet ng-init="vs = {'type': 'Private'}">
+	<h2 class="md-title">Create Virual Switch</h2>
+	<md-input-container>
+		<label>Virtual Switch Name</label>
+		<input ng-model="vs.name" type="text" required>
+	</md-input-container>
+	<div layout flex>
+		<p>Virtual Switch Type</p>
+		<md-radio-group ng-model="vs.type">
+			<md-radio-button value="Internal" class="md-primary">Internal</md-radio-button>
+			<md-radio-button value="Private" class="md-primary">Private</md-radio-button>
+		</md-radio-group>
+	</div>
+	<div class="md-actions" layout layout-sm="row" layout-align="end center">
+		<md-button class="md-raised md-primary" ng-click="launch(vs)">Create</md-button>
+		<md-button class="md-warn" ng-click="close()">Cancel</md-button>
+	</div>
+</md-bottom-sheet>

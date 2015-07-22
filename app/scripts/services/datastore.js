@@ -1,8 +1,8 @@
 (function () {
-	var app = angular.module('app.datastore', ['app.core', 'app.authentication']);
+	var app = angular.module('app.datastore', ['app.core']);
 	app.service('datastore', datastore);
-	datastore.$inject = ['$http', 'observer', '$rootScope', 'authentication', 'socket'];
-	function datastore($http, observer, $rootScope, authentication, socket) {
+	datastore.$inject = ['$http', 'observer', '$rootScope', 'socket'];
+	function datastore($http, observer, $rootScope, socket) {
 		var datastore = this;
 		var modelStorage = [];
 		socket.on('updatedModel', function (data) {
@@ -24,8 +24,8 @@
 					});
 				});
 		};
-		datastore.create = function (model, object) {
-			$http.post('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
+		datastore.create = function (model, object, token) {
+			$http.post('/api/' + model.capitalizeFirstLetter(), { object: object, token: token })
 				.success(function (data, status, headers, config) {
 					modelStorage[model + data.id] = data.object;
 					observer.notify('datastore');
@@ -37,8 +37,8 @@
 					});
 				});
 		};
-		datastore.update = function (model, object) {
-			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: authentication.token() })
+		datastore.update = function (model, object, token) {
+			$http.put('/api/' + model.capitalizeFirstLetter(), { object: object, token: token })
 				.success(function (data, status, headers, config) {
 					datastore.get(model, object.id);
 					$rootScope.$broadcast('notification', {
