@@ -331,6 +331,15 @@ String.prototype.capitalizeFirstLetter = function () {
 	}]);
 })();
 (function () {
+	var app = angular.module('app.logger', []);
+	app.service('logger', logger);
+	logger.$inject = [];
+	function logger() {
+		var logger = this;
+		return logger;
+	}
+})();
+(function () {
 	var app = angular.module('app.virtualMachine', ['app.core']);
 	app.service('virtualMachine', virtualMachine);
 	virtualMachine.$inject = ['observer', '$http'];
