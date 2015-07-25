@@ -42,8 +42,8 @@
 		mainCtrl.mainMenu = [
 			{
 				link: '/',
-				title: 'Dashboard',
-				icon: 'dashboard'
+				title: 'Home',
+				icon: 'home'
 			},
 			{
 				link: '/about',
@@ -56,16 +56,21 @@
 				icon: 'question_answer'
 			},
 			{
-				link: '/account',
-				title: 'Account',
-				icon: 'account_circle'
+				link: '/dashboard',
+				title: 'Dashboard',
+				icon: 'dashboard'
 			}
 		];
 		mainCtrl.managementMenu = [
 			{
-				link: '/vm',
-				title: 'Virtual Machines',
-				icon: 'cloud'
+				link: '/account',
+				title: 'Account',
+				icon: 'account_circle'
+			},
+			{
+				link: '/network',
+				title: 'Network',
+				icon: 'public'
 			},
 			{
 				link: '/storage',
@@ -73,20 +78,10 @@
 				icon: 'storage'
 			},
 			{
-				link: '/network',
-				title: 'Network',
-				icon: 'public'
+				link: '/vm',
+				title: 'Virtual Machines',
+				icon: 'cloud_circle'
 			},
-			// {
-			// 	link: '/messages',
-			// 	title: 'Messages',
-			// 	icon: 'message'
-			// },
-			// {
-			// 	link: '/tasks',
-			// 	title: 'Tasks',
-			// 	icon: 'list'
-			// },
 			{
 				link: '/settings',
 				title: 'Settings',

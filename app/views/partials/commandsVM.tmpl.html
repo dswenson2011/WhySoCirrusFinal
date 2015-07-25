@@ -1,40 +1,30 @@
-<md-bottom-sheet class="md-grid">
-	<md-list>
-		<md-list-item>
-			<md-button class="md-grid-item-content">
-				<ng-md-icon icon="launch" size="64"></ng-md-icon>
-				<div class="md-grid-text">Off</div>
-			</md-button>
-		</md-list-item>
-		<md-list-item>
-			<md-button class="md-grid-item-content">
-				<ng-md-icon icon="launch" size="64"></ng-md-icon>
-				<div class="md-grid-text">Off</div>
-			</md-button>
-		</md-list-item>
-		<md-list-item>
-			<md-button class="md-grid-item-content">
-				<ng-md-icon icon="launch" size="64"></ng-md-icon>
-				<div class="md-grid-text">Off</div>
-			</md-button>
-		</md-list-item>
-		<md-list-item>
-			<md-button class="md-grid-item-content">
-				<ng-md-icon icon="launch" size="64"></ng-md-icon>
-				<div class="md-grid-text">Off</div>
-			</md-button>
-		</md-list-item>
-		<md-list-item>
-			<md-button class="md-grid-item-content">
-				<ng-md-icon icon="launch" size="64"></ng-md-icon>
-				<div class="md-grid-text">Off</div>
-			</md-button>
-		</md-list-item>
-		<md-list-item>
-			<md-button class="md-grid-item-content">
-				<ng-md-icon icon="launch" size="64"></ng-md-icon>
-				<div class="md-grid-text">Off</div>
-			</md-button>
-		</md-list-item>
-	</md-list>
-</md-bottom-sheet>
+<md-dialog aria-label="List dialog">
+	<md-dialog-content class="md-grid">
+			<md-list layout="row" layout-align="center center">
+				<md-list-item flex>
+					<md-button class="md-grid-item-content">
+						<ng-md-icon icon="cloud_queue" size="64"></ng-md-icon>
+						<div class="md-grid-text">On</div>
+					</md-button>
+				</md-list-item>
+				<md-list-item flex>
+					<md-button class="md-grid-item-content">
+						<ng-md-icon icon="cloud_off" size="64"></ng-md-icon>
+						<div class="md-grid-text">Off</div>
+					</md-button>
+				</md-list-item>
+				<md-list-item flex>
+					<md-button class="md-grid-item-content">
+						<ng-md-icon icon="storage" size="64"></ng-md-icon>
+						<div class="md-grid-text">Disk</div>
+					</md-button>
+				</md-list-item>
+				<md-list-item flex>
+					<md-button class="md-grid-item-content">
+						<ng-md-icon icon="data_usage" size="64"></ng-md-icon>
+						<div class="md-grid-text">Usage</div>
+					</md-button>
+				</md-list-item>
+			</md-list>
+	</md-dialog-content>
+</md-dialog>

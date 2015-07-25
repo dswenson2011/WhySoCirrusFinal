@@ -4,13 +4,14 @@
 		$routeProvider
 			.when('/', routeOption('home'))
 			.when('/about', routeOption('about'))
+			.when('/dashboard', secureRouteOption('dashboard', true))
 			.when('/account', secureRouteOption('account', true))
 			.when('/faq', routeOption('faq'))
 			.when('/logout', routeOption('logout'))
 			.when('/network', secureRouteOption('network', true))
 			.when('/settings', secureRouteOption('settings', true))
 			.when('/storage', secureRouteOption('storage'))
-			.when('/vm', secureRouteOption('vm', true));
+			.when('/vm', routeOption('vm'));
 	}]);
 	function routeOption(route) {
 		return {

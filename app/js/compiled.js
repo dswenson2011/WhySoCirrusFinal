@@ -5,7 +5,7 @@ String.prototype.capitalizeFirstLetter = function () {
 	var app = angular.module('app.core', ['ngMaterial', 'ngMdIcons', 'ngMessages', 'ngRoute', 'angular-md5', 'btford.socket-io', 'md.data.table']);
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 		$mdThemingProvider.theme('default')
-			.primaryPalette('deep-purple')
+			.primaryPalette('teal')
 			.accentPalette('blue-grey');
 	}]);
 	app.filter('arrayFilter', function () {
@@ -56,13 +56,14 @@ String.prototype.capitalizeFirstLetter = function () {
 		$routeProvider
 			.when('/', routeOption('home'))
 			.when('/about', routeOption('about'))
+			.when('/dashboard', secureRouteOption('dashboard', true))
 			.when('/account', secureRouteOption('account', true))
 			.when('/faq', routeOption('faq'))
 			.when('/logout', routeOption('logout'))
 			.when('/network', secureRouteOption('network', true))
 			.when('/settings', secureRouteOption('settings', true))
 			.when('/storage', secureRouteOption('storage'))
-			.when('/vm', secureRouteOption('vm', true));
+			.when('/vm', routeOption('vm'));
 	}]);
 	function routeOption(route) {
 		return {
@@ -461,6 +462,17 @@ String.prototype.capitalizeFirstLetter = function () {
 })();
 (function () {
 	var app = angular.module('app');
+	app.controller('dashboardController', DashboardCtrl);
+	DashboardCtrl.$inject = ['layout'];
+	function DashboardCtrl(layout) {
+		layout.page('dashboard');
+		layout.tools('');
+		var DashboardCtrl = this;
+		return DashboardCtrl;
+	};
+})();
+(function () {
+	var app = angular.module('app');
 	app.controller('faqController', faqCtrl);
 	faqCtrl.$inject = ['layout'];
 	function faqCtrl(layout) {
@@ -475,7 +487,7 @@ String.prototype.capitalizeFirstLetter = function () {
 	app.controller('homeController', HomeCtrl);
 	HomeCtrl.$inject = ['layout'];
 	function HomeCtrl(layout) {
-		layout.page('dashboard');
+		layout.page('home');
 		layout.tools('');
 		var HomeCtrl = this;
 		return HomeCtrl;
@@ -538,8 +550,8 @@ String.prototype.capitalizeFirstLetter = function () {
 		mainCtrl.mainMenu = [
 			{
 				link: '/',
-				title: 'Dashboard',
-				icon: 'dashboard'
+				title: 'Home',
+				icon: 'home'
 			},
 			{
 				link: '/about',
@@ -552,16 +564,21 @@ String.prototype.capitalizeFirstLetter = function () {
 				icon: 'question_answer'
 			},
 			{
-				link: '/account',
-				title: 'Account',
-				icon: 'account_circle'
+				link: '/dashboard',
+				title: 'Dashboard',
+				icon: 'dashboard'
 			}
 		];
 		mainCtrl.managementMenu = [
 			{
-				link: '/vm',
-				title: 'Virtual Machines',
-				icon: 'cloud'
+				link: '/account',
+				title: 'Account',
+				icon: 'account_circle'
+			},
+			{
+				link: '/network',
+				title: 'Network',
+				icon: 'public'
 			},
 			{
 				link: '/storage',
@@ -569,20 +586,10 @@ String.prototype.capitalizeFirstLetter = function () {
 				icon: 'storage'
 			},
 			{
-				link: '/network',
-				title: 'Network',
-				icon: 'public'
+				link: '/vm',
+				title: 'Virtual Machines',
+				icon: 'cloud_circle'
 			},
-			// {
-			// 	link: '/messages',
-			// 	title: 'Messages',
-			// 	icon: 'message'
-			// },
-			// {
-			// 	link: '/tasks',
-			// 	title: 'Tasks',
-			// 	icon: 'list'
-			// },
 			{
 				link: '/settings',
 				title: 'Settings',
@@ -728,8 +735,8 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast', '$scope'];
-	function vmCtrl(layout, $mdBottomSheet, $mdToast, $scope) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdDialog', '$mdToast', '$scope'];
+	function vmCtrl(layout, $mdBottomSheet, $mdDialog, $mdToast, $scope) {
 		var vmCtrl = this;
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('vmCreate');
@@ -739,7 +746,7 @@ String.prototype.capitalizeFirstLetter = function () {
 		vmCtrl.vms = [];
 		layout.page('virtual machines');
 		layout.newDialog('vmCommand', function () {
-			$mdBottomSheet.show({
+			$mdDialog.show({
 				templateUrl: 'views/partials/commandsVM.tmpl.html',
 				controller: bottomCtrl
 			});
@@ -783,7 +790,7 @@ String.prototype.capitalizeFirstLetter = function () {
 			},
 			{
 				action: layout.openDialog,
-				params: 'vmCreate',
+				params: 'vmCommand',
 				icon: "delete",
 				tooltip: {
 					message: "Delete VM",

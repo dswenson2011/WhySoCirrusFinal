@@ -1,8 +1,8 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast', '$scope'];
-	function vmCtrl(layout, $mdBottomSheet, $mdToast, $scope) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdDialog', '$mdToast', '$scope'];
+	function vmCtrl(layout, $mdBottomSheet, $mdDialog, $mdToast, $scope) {
 		var vmCtrl = this;
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('vmCreate');
@@ -12,7 +12,7 @@
 		vmCtrl.vms = [];
 		layout.page('virtual machines');
 		layout.newDialog('vmCommand', function () {
-			$mdBottomSheet.show({
+			$mdDialog.show({
 				templateUrl: 'views/partials/commandsVM.tmpl.html',
 				controller: bottomCtrl
 			});
@@ -56,7 +56,7 @@
 			},
 			{
 				action: layout.openDialog,
-				params: 'vmCreate',
+				params: 'vmCommand',
 				icon: "delete",
 				tooltip: {
 					message: "Delete VM",
