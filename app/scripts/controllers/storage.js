@@ -1,9 +1,13 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('storageController', storageCtrl);
-	storageCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
-	function storageCtrl(layout, $mdBottomSheet, $mdToast) {
+	storageCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
+	function storageCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
 		var storageCtrl = this;
+		$scope.$on('$destroy', function () {
+			layout.removeDialog('storageCreate');
+			layout.removeDialog('storageDelete');
+		});
 		layout.page('storage');
 		layout.newDialog('storageCreate', function () {
 			$mdBottomSheet.show({

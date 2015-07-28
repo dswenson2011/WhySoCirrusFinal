@@ -1,9 +1,13 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
-	networkCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
-	function networkCtrl(layout, $mdBottomSheet, $mdToast) {
+	networkCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
+	function networkCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
 		var networkCtrl = this;
+		$scope.$on('$destroy', function () {
+			layout.removeDialog('networkCreate');
+			layout.removeDialog('networkDelete');
+		});
 		networkCtrl.selected = [];
 		layout.page('network');
 		layout.newDialog('networkCreate', function () {

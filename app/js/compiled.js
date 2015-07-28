@@ -595,9 +595,13 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
-	networkCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
-	function networkCtrl(layout, $mdBottomSheet, $mdToast) {
+	networkCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
+	function networkCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
 		var networkCtrl = this;
+		$scope.$on('$destroy', function () {
+			layout.removeDialog('networkCreate');
+			layout.removeDialog('networkDelete');
+		});
 		networkCtrl.selected = [];
 		layout.page('network');
 		layout.newDialog('networkCreate', function () {
@@ -666,9 +670,13 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('storageController', storageCtrl);
-	storageCtrl.$inject = ['layout', '$mdBottomSheet', '$mdToast'];
-	function storageCtrl(layout, $mdBottomSheet, $mdToast) {
+	storageCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
+	function storageCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
 		var storageCtrl = this;
+		$scope.$on('$destroy', function () {
+			layout.removeDialog('storageCreate');
+			layout.removeDialog('storageDelete');
+		});
 		layout.page('storage');
 		layout.newDialog('storageCreate', function () {
 			$mdBottomSheet.show({
