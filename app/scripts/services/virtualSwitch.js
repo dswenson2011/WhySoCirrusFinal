@@ -13,6 +13,17 @@
 					console.log(error);
 				});
 		};
+		virtualSwitch.delete = function (vs, token) {
+			var defer = $q.defer();
+			$http.delete('/VS/Delete/' + vs.ID, { token: token })
+				.success(function () {
+					defer.resolve();
+				})
+				.error(function () {
+					defer.reject();
+				});
+			return defer.promise;
+		};
 		virtualSwitch.findAll = function () {
 			var defer = $q.defer();
 			$http.get('/VS/')
@@ -25,10 +36,6 @@
 				});
 			return defer.promise;
 		};
-
-		virtualSwitch.find = function (SeachParams) {
-
-		}
 		return virtualSwitch;
 	};
 })();

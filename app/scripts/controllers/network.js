@@ -46,6 +46,7 @@
 		});
 		layout.newDialog('networkDelete', function () {
 			console.log('Delete selected network switch dialog');
+			console.log(networkCtrl.selected);
 		});
 		layout.tools([
 			{
