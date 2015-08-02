@@ -15,7 +15,8 @@
 		};
 		virtualSwitch.delete = function (vs, token) {
 			var defer = $q.defer();
-			$http.delete('/VS/Delete/' + vs.ID, { token: token })
+			console.log(vs);
+			$http.delete('/VS/Delete/' + vs.Id, { token: token })
 				.success(function () {
 					defer.resolve();
 				})
