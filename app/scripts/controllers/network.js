@@ -1,24 +1,35 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
-	networkCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
-	function networkCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
+	networkCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast', 'virtualSwitch'];
+	function networkCtrl(layout, $scope, $mdBottomSheet, $mdToast, virtualSwitch) {
 		var networkCtrl = this;
+		networkCtrl.vss = [];
+		virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });
+		networkCtrl.query = {
+			order: 'Name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		networkCtrl.filter = function (item, index) {
+			return index >= (networkCtrl.query.limit * (networkCtrl.query.page - 1));
+		};
+		networkCtrl.selected = [];
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('networkCreate');
 			layout.removeDialog('networkDelete');
 		});
-		networkCtrl.selected = [];
 		layout.page('network');
 		layout.newDialog('networkCreate', function () {
 			$mdBottomSheet.show({
 				templateUrl: 'views/partials/createVS.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			bottomCtrl.$inject = ['$scope', 'virtualSwitch'];
 			function bottomCtrl($scope, virtualSwitch) {
 				$scope.launch = function (vs) {
-					if (vs.name == undefined || vs.type == undefined) {
+					if (vs.Name == undefined || vs.SwitchType == undefined) {
 						$mdToast.show($mdToast.simple({
 							content: 'Warning items are missing!'
 						}));

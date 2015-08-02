@@ -360,23 +360,39 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app.virtualSwitch', ['app.core']);
 	app.service('virtualSwitch', virtualSwitch);
-	virtualSwitch.$inject = ['observer', '$http'];
-	function virtualSwitch(observer, $http) {
+	virtualSwitch.$inject = ['observer', '$http', '$q'];
+	function virtualSwitch(observer, $http, $q) {
 		var virtualSwitch = this;
 		virtualSwitch.launch = function (vs, token) {
-			$http.post('/api/vs/launch', { vs: vs, token: token })
+			$http.post('/VS/Create', { vs: vs, token: token })
 				.success(function (data, status, headers, config) {
-					
+					console.log(data);
 				})
 				.error(function (error) {
-
+					console.log(error);
 				});
 		};
+		virtualSwitch.findAll = function () {
+			var defer = $q.defer();
+			$http.get('/VS/')
+				.success(function (data, status, headers, config) {
+					defer.resolve(data);
+				})
+				.error(function (error) {
+					console.log(error);
+					defer.reject([]);
+				});
+			return defer.promise;
+		};
+
+		virtualSwitch.find = function (SeachParams) {
+
+		}
 		return virtualSwitch;
 	};
 })();
 (function () {
-	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes', 'app.virtualMachine']);
+	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes', 'app.virtualMachine', 'app.virtualSwitch']);
 	app.run(['authentication', function (authentication) {
 		if (authentication.token() === undefined)
 			authentication.loadToken();
@@ -595,24 +611,35 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
-	networkCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
-	function networkCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
+	networkCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast', 'virtualSwitch'];
+	function networkCtrl(layout, $scope, $mdBottomSheet, $mdToast, virtualSwitch) {
 		var networkCtrl = this;
+		networkCtrl.vss = [];
+		virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });
+		networkCtrl.query = {
+			order: 'Name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		networkCtrl.filter = function (item, index) {
+			return index >= (networkCtrl.query.limit * (networkCtrl.query.page - 1));
+		};
+		networkCtrl.selected = [];
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('networkCreate');
 			layout.removeDialog('networkDelete');
 		});
-		networkCtrl.selected = [];
 		layout.page('network');
 		layout.newDialog('networkCreate', function () {
 			$mdBottomSheet.show({
 				templateUrl: 'views/partials/createVS.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			bottomCtrl.$inject = ['$scope', 'virtualSwitch'];
 			function bottomCtrl($scope, virtualSwitch) {
 				$scope.launch = function (vs) {
-					if (vs.name == undefined || vs.type == undefined) {
+					if (vs.Name == undefined || vs.SwitchType == undefined) {
 						$mdToast.show($mdToast.simple({
 							content: 'Warning items are missing!'
 						}));
