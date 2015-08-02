@@ -1,3 +1,4 @@
+// [TODO:David] Add authentication service to pass token into virtualSwitch service
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
@@ -36,7 +37,7 @@
 						return;
 					}
 					virtualSwitch.launch(vs);
-					networkCtrl.vss.push(vs);
+					virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {
@@ -47,6 +48,15 @@
 		layout.newDialog('networkDelete', function () {
 			console.log('Delete selected network switch dialog');
 			console.log(networkCtrl.selected);
+			angular.forEach(networkCtrl.selected, function (item) {
+				virtualSwitch.delete(item).then(function () {
+					virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });
+				}, function () {
+					$mdToast.show($mdToast.simple({
+						content: 'Failed to delete ' + item.Name
+					}));
+				});
+			});
 		});
 		layout.tools([
 			{
