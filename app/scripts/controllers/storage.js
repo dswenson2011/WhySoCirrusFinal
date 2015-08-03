@@ -1,9 +1,20 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('storageController', storageCtrl);
-	storageCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
-	function storageCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
+	storageCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast', 'virtualDisk'];
+	function storageCtrl(layout, $scope, $mdBottomSheet, $mdToast, virtualDisk) {
 		var storageCtrl = this;
+		virtualDisk.findAll().then(function (data) { storageCtrl.vhds = data; }, function (data) { storageCtrl.vhds = data; });
+		storageCtrl.selected = [];
+		storageCtrl.query = {
+			order: 'Name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		storageCtrl.filter = function (item, index) {
+			return index >= (storageCtrl.query.limit * (storageCtrl.query.page - 1));
+		};
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('storageCreate');
 			layout.removeDialog('storageDelete');
@@ -14,7 +25,7 @@
 				templateUrl: 'views/partials/createVD.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			bottomCtrl.$inject = ['$scope', 'virtualDisk'];
 			function bottomCtrl($scope, virtualDisk) {
 				$scope.launch = function (vhd) {
 					if (vhd.name == undefined || vhd.operatingSystem == undefined) {
@@ -24,7 +35,7 @@
 						return;
 					}
 					virtualDisk.launch(vhd);
-					storageCtrl.vhd.push(vhd);
+					virtualDisk.findAll().then(function (data) { storageCtrl.vhds = data; }, function (data) { storageCtrl.vhds = data; });
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {

@@ -24,7 +24,8 @@
     "passport": "*",
     "passport-windowsauth": "*",
     "sequelize": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "mongodb": "*"
   },
   "devDependencies": {
     "grunt": "*",

@@ -5,13 +5,15 @@
 	function virtualSwitch(observer, $http, $q) {
 		var virtualSwitch = this;
 		virtualSwitch.launch = function (vs, token) {
+			var defer = $q.defer();
 			$http.post('/VS/Create', { vs: vs, token: token })
 				.success(function (data, status, headers, config) {
-					console.log(data);
+					defer.resolve();
 				})
 				.error(function (error) {
-					console.log(error);
+					defer.reject();
 				});
+			return defer.promise;
 		};
 		virtualSwitch.delete = function (vs, token) {
 			var defer = $q.defer();
@@ -32,7 +34,6 @@
 					defer.resolve(data);
 				})
 				.error(function (error) {
-					console.log(error);
 					defer.reject([]);
 				});
 			return defer.promise;

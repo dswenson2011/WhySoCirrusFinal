@@ -41,9 +41,6 @@
 				};
 			};
 		});
-		function Test(item) {
-			console.log(item);
-		};
 		layout.tools([
 			{
 				action: layout.openDialog,

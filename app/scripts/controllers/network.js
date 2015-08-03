@@ -46,8 +46,6 @@
 			};
 		});
 		layout.newDialog('networkDelete', function () {
-			console.log('Delete selected network switch dialog');
-			console.log(networkCtrl.selected);
 			angular.forEach(networkCtrl.selected, function (item) {
 				virtualSwitch.delete(item).then(function () {
 					virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });

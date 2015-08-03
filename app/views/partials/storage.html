@@ -1,11 +1,11 @@
 <md-content layout-padding>
-	<!--<md-card flex-gt-sm="90" flex-gt-md="80">
+	<md-card flex-gt-sm="90" flex-gt-md="80">
 		<md-card-content>
 			<md-data-table-toolbar>
 				<h2 class="md-title">Virtual Disks</h2>
 			</md-data-table-toolbar>
 			<md-data-table-container>
-				<table md-data-table md-row-select="selected">
+				<table md-data-table md-row-select="storage.selected">
 					<thead md-order="action" md-trigger="onOrderChange">
 						<tr>
 							<th order-by="action">Action</th>
@@ -15,9 +15,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="log in account.logs | orderBy: action | filter: account.filter  | limitTo: account.query.limit">
-							<td>{{ log.action }}</td>
-							<td>{{ log.item }}</td>
+						<tr ng-repeat="vhd in storage.vhds | orderBy: action | filter: account.filter  | limitTo: account.query.limit">
+							<td>{{ vhd.Id }}</td>
+							<td>{{ log.Name }}</td>
 							<td>{{ log.date }}</td>
 							<td>{{ log.result }}</td>
 						</tr>
@@ -29,5 +29,5 @@
 				md-total="{{account.logs.length}}"></md-data-table-pagination>
 			</div>
 		</md-card-content>
-	</md-card>-->
+	</md-card>
 </md-content>

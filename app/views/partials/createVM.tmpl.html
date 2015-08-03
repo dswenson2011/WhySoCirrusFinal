@@ -22,12 +22,20 @@
 	</div>
 	<div layout flex>
 		<div flex="20" layout layout-align="start center">
-			<span class="md-body-1">Network Adapter</span>
+			<span class="md-body-1">Virtual Switch</span>
 		</div>
-		<md-select placeholder="Network Adapter" ng-model="vm.networkAdapter" required>
-			<md-option value="External">External Only</md-option>
-			<md-option value="Private">Private Only</md-option>
-			<md-option value="External & Private">External & Private</md-option>
+		<md-select placeholder="Virtual Switch" ng-model="vm.virtualSwitch" required>
+			<!--[TODO:David] Virtual Switches repeat got to load them in-->
+			<md-option></md-option>
+		</md-select>
+	</div>
+	
+	<div layout flex>
+		<div flex="20" layout layout-align="start center">
+			<span class="md-body-1">Virtual Disk</span>
+		</div>
+		<md-select placeholder="Virtual Disk" ng-model="vm.virtualDisk" required>
+			<!--[TODO:David] Virtual Disks repeat got to load them in-->
 		</md-select>
 	</div>
 	<div layout flex layout-align="end center">
