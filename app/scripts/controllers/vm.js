@@ -38,12 +38,6 @@
 				virtualDisk.findAll().then(function (data) { $scope.VDs = data; }, function (error) { $scope.VDs = error; });
 				virtualSwitch.findAll().then(function (data) { $scope.VSs = data; }, function (error) { $scope.VSs = error });
 				$scope.launch = function (vm) {
-					if (vm.name == undefined || vm.operatingSystem == undefined || vm.networkAdapter == undefined) {
-						$mdToast.show($mdToast.simple({
-							content: 'Warning items are missing!'
-						}));
-						return;
-					}
 					virtualMachine.launch(vm, authentication.token());
 					virtualMachine.findAll().then(function (data) { vmCtrl.vms = data; }, function (err) { vmCtrl.vms = err });
 					$mdBottomSheet.hide();
