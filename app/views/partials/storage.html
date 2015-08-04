@@ -6,9 +6,9 @@
 			</md-data-table-toolbar>
 			<md-data-table-container>
 				<table md-data-table md-row-select="storage.selected">
-					<thead md-order="Id" md-trigger="onOrderChange">
+					<thead md-order="DiskIdentifier" md-trigger="onOrderChange">
 						<tr>
-							<th order-by="Id">ID</th>
+							<th order-by="DiskIdentifier">ID</th>
 							<th order-by="Path">Path</th>
 							<th order-by="Size">Size</th>
 							<th order-by="Attached">Attached</th>
@@ -16,7 +16,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="vhd in storage.vhds | orderBy: action | filter: storage.filter  | limitTo: storage.query.limit">
-							<td>{{ vhd.Id }}</td>
+							<td>{{ vhd.DiskIdentifier }}</td>
 							<td>{{ vhd.Path }}</td>
 							<td>{{ vhd.Size }}</td>
 							<td>{{ vhd.Attached }}</td>
