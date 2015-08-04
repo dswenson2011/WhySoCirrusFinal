@@ -374,8 +374,8 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app.virtualMachine', ['app.core']);
 	app.service('virtualMachine', virtualMachine);
-	virtualMachine.$inject = ['observer', '$http'];
-	function virtualMachine(observer, $http) {
+	virtualMachine.$inject = ['observer', '$http', '$q'];
+	function virtualMachine(observer, $http, $q) {
 		var virtualMachine = this;
 		virtualMachine.launch = function (vm, token) {
 			$http.post('/api/vm/launch', { vm: vm, token: token })
@@ -385,6 +385,17 @@ String.prototype.capitalizeFirstLetter = function () {
 				.error(function (error) {
 
 				});
+		};
+		virtualMachine.findAll = function () {
+			var defer = $q.defer();
+			$http.get('/VM/')
+				.success(function (data, status, headers, config) {
+					defer.resolve(data);
+				})
+				.error(function (error) {
+					defer.reject([]);
+				});
+			return defer.promise;
 		};
 		return virtualMachine;
 	};
@@ -818,15 +829,24 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdDialog', '$mdToast', '$scope'];
-	function vmCtrl(layout, $mdBottomSheet, $mdDialog, $mdToast, $scope) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdDialog', '$mdToast', '$scope', 'virtualMachine'];
+	function vmCtrl(layout, $mdBottomSheet, $mdDialog, $mdToast, $scope, virtualMachine) {
 		var vmCtrl = this;
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('vmCreate');
 			layout.removeDialog('vmCommand');
 		});
+		vmCtrl.query = {
+			order: 'Name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		vmCtrl.filter = function (item, index) {
+			return index >= (vmCtrl.query.limit * (vmCtrl.query.page - 1));
+		};
 		vmCtrl.selected = [];
-		vmCtrl.vms = [];
+		virtualMachine.findAll().then(function (data) { vmCtrl.vms = data; }, function (err) { vmCtrl.vms = err });
 		layout.page('virtual machines');
 		layout.newDialog('vmCommand', function () {
 			$mdDialog.show({
@@ -853,6 +873,7 @@ String.prototype.capitalizeFirstLetter = function () {
 						return;
 					}
 					virtualMachine.launch(vm, authentication.token());
+					virtualMachine.findAll().then(function (data) { vmCtrl.vms = data; }, function (err) { vmCtrl.vms = err });
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {

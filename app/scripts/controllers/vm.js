@@ -1,15 +1,24 @@
 (function () {
 	var app = angular.module('app');
 	app.controller('vmController', vmCtrl);
-	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdDialog', '$mdToast', '$scope'];
-	function vmCtrl(layout, $mdBottomSheet, $mdDialog, $mdToast, $scope) {
+	vmCtrl.$inject = ['layout', '$mdBottomSheet', '$mdDialog', '$mdToast', '$scope', 'virtualMachine'];
+	function vmCtrl(layout, $mdBottomSheet, $mdDialog, $mdToast, $scope, virtualMachine) {
 		var vmCtrl = this;
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('vmCreate');
 			layout.removeDialog('vmCommand');
 		});
+		vmCtrl.query = {
+			order: 'Name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		vmCtrl.filter = function (item, index) {
+			return index >= (vmCtrl.query.limit * (vmCtrl.query.page - 1));
+		};
 		vmCtrl.selected = [];
-		vmCtrl.vms = [];
+		virtualMachine.findAll().then(function (data) { vmCtrl.vms = data; }, function (err) { vmCtrl.vms = err });
 		layout.page('virtual machines');
 		layout.newDialog('vmCommand', function () {
 			$mdDialog.show({
@@ -36,6 +45,7 @@
 						return;
 					}
 					virtualMachine.launch(vm, authentication.token());
+					virtualMachine.findAll().then(function (data) { vmCtrl.vms = data; }, function (err) { vmCtrl.vms = err });
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {
