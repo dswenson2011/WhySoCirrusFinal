@@ -3,24 +3,30 @@
 		<md-card-content>
 			<md-data-table-container>
 				<table md-data-table md-row-select="vm.selected">
-					<thead md-order="name">
+					<thead md-order="Id" md-trigger="onOrderChange">
 						<tr>
-							<th>Name</th>
-							<th>Operating System</th>
-							<th>Network</th>
-							<th>Status</th>
+							<th order-by="Id">Id</th>
+							<th order-by="Name">Name</th>
+							<th order-by="ProcessorCount">CPU</th>
+							<th order-by="MemoryAssigned">RAM</th>
+							<th order-by="Uptime.TotalSeconds">Uptime</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="vmItem in vm.vms | orderBy: action">
-							<td>{{vmItem.name}}</td>
-							<td>{{vmItem.operatingSystem}}</td>
-							<td>{{vmItem.networkAdapter}}</td>
-							<td>{{vmItem.status}}</td>
+						<tr ng-repeat="vmItem in vm.vms | orderBy: action | filter: vm.filter  | limitTo: vm.query.limit">
+							<td>{{vmItem.Id}}</td>
+							<td>{{vmItem.Name}}</td>
+							<td>{{vmItem.ProcessorCount}}</td>
+							<td>{{(vmItem.MemoryAssigned-0)/1000000000}}GB</td>
+							<td>{{vmItem.Uptime.Days}} {{vmItem.Uptime.Hours}}:{{vmItem.Uptime.Minutes}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</md-data-table-container>
+			<div class="md-actions" layout layout-sm="row" layout-align="end center">
+				<md-data-table-pagination md-label="{'text':'Items per page'}" md-limit="vm.query.limit" md-page="vm.query.page"
+				md-total="{{vm.vms.length}}"></md-data-table-pagination>
+			</div>
 		</md-card-content>
 	</md-card>
 </md-content>
