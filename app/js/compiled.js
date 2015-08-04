@@ -378,12 +378,12 @@ String.prototype.capitalizeFirstLetter = function () {
 	function virtualMachine(observer, $http, $q) {
 		var virtualMachine = this;
 		virtualMachine.launch = function (vm, token) {
-			$http.post('/api/vm/launch', { vm: vm, token: token })
+			$http.post('/VM/Create', { vm: vm, token: token })
 				.success(function (data, status, headers, config) {
-
+					console.log(data);
 				})
 				.error(function (error) {
-
+					console.log(error);
 				});
 		};
 		virtualMachine.findAll = function () {
