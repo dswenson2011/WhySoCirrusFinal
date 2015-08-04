@@ -426,7 +426,7 @@ String.prototype.capitalizeFirstLetter = function () {
 	};
 })();
 (function () {
-	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes', 'app.virtualMachine', 'app.virtualSwitch']);
+	var app = angular.module('app', ['app.core', 'app.authentication', 'app.datastore', 'app.layout', 'app.routes', 'app.virtualMachine', 'app.virtualSwitch', 'app.virtualDisk']);
 	app.run(['authentication', function (authentication) {
 		if (authentication.token() === undefined)
 			authentication.loadToken();
