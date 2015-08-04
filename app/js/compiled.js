@@ -841,8 +841,10 @@ String.prototype.capitalizeFirstLetter = function () {
 				templateUrl: 'views/partials/createVM.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine', 'authentication'];
-			function bottomCtrl($scope, virtualMachine, authentication) {
+			bottomCtrl.$inject = ['$scope', 'virtualMachine', 'virtualSwitch', 'virtualDisk', 'authentication'];
+			function bottomCtrl($scope, virtualMachine, virtualSwitch, virtualDisk, authentication) {
+				virtualDisk.findAll().then(function (data) { $scope.VDs = data; }, function (error) { $scope.VDs = error; });
+				virtualSwitch.findAll().then(function (data) { $scope.VSs = data; }, function (error) { $scope.VSs = error });
 				$scope.launch = function (vm) {
 					if (vm.name == undefined || vm.operatingSystem == undefined || vm.networkAdapter == undefined) {
 						$mdToast.show($mdToast.simple({

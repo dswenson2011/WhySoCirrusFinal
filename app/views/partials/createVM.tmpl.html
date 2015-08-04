@@ -25,8 +25,7 @@
 			<span class="md-body-1">Virtual Switch</span>
 		</div>
 		<md-select placeholder="Virtual Switch" ng-model="vm.virtualSwitch" required>
-			<!--[TODO:David] Virtual Switches repeat got to load them in-->
-			<md-option></md-option>
+			<md-option ng-repeat="vs in VSs" ng-value="vs.Id">{{vs.Name}}</md-option>
 		</md-select>
 	</div>
 	
@@ -35,7 +34,7 @@
 			<span class="md-body-1">Virtual Disk</span>
 		</div>
 		<md-select placeholder="Virtual Disk" ng-model="vm.virtualDisk" required>
-			<!--[TODO:David] Virtual Disks repeat got to load them in-->
+			<md-option ng-repeat="vd in VDs" ng-value="vd.DiskIdentifier">{{vd.Path}}</md-option>
 		</md-select>
 	</div>
 	<div layout flex layout-align="end center">
