@@ -17,6 +17,13 @@
 		};
 		virtualDisk.findAll = function () {
 			var defer = $q.defer();
+			$http.get('/VD/')
+				.success(function (data, status, headers, config) {
+					defer.resolve(data);
+				})
+				.error(function (error) {
+					defer.reject([]);
+				});
 			return defer.promise;
 		};
 		virtualDisk.delete = function (vd) { };
