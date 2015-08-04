@@ -340,6 +340,31 @@ String.prototype.capitalizeFirstLetter = function () {
 	}
 })();
 (function () {
+	var app = angular.module('app.virtualDisk', ['app.core']);
+	app.service('virtualDisk', virtualDisk);
+	virtualDisk.$inject = ['$http', '$q'];
+	function virtualDisk($http, $q) {
+		var virtualDisk = this;
+		virtualDisk.launch = function (vd, token) {
+			var defer = $q.defer();
+			$http.post('/VD/Create', { vd: vd, token: token })
+			.success(function(){
+				defer.resolve();
+			})
+			.error(function(){
+				defer.reject();
+			});
+			return defer.promise;
+		};
+		virtualDisk.findAll = function () {
+			var defer = $q.defer();
+			return defer.promise;
+		};
+		virtualDisk.delete = function (vd) { };
+		return virtualDisk;
+	};
+})();
+(function () {
 	var app = angular.module('app.virtualMachine', ['app.core']);
 	app.service('virtualMachine', virtualMachine);
 	virtualMachine.$inject = ['observer', '$http'];
@@ -364,13 +389,27 @@ String.prototype.capitalizeFirstLetter = function () {
 	function virtualSwitch(observer, $http, $q) {
 		var virtualSwitch = this;
 		virtualSwitch.launch = function (vs, token) {
+			var defer = $q.defer();
 			$http.post('/VS/Create', { vs: vs, token: token })
 				.success(function (data, status, headers, config) {
-					console.log(data);
+					defer.resolve();
 				})
 				.error(function (error) {
-					console.log(error);
+					defer.reject();
 				});
+			return defer.promise;
+		};
+		virtualSwitch.delete = function (vs, token) {
+			var defer = $q.defer();
+			console.log(vs);
+			$http.delete('/VS/Delete/' + vs.Id, { token: token })
+				.success(function () {
+					defer.resolve();
+				})
+				.error(function () {
+					defer.reject();
+				});
+			return defer.promise;
 		};
 		virtualSwitch.findAll = function () {
 			var defer = $q.defer();
@@ -379,15 +418,10 @@ String.prototype.capitalizeFirstLetter = function () {
 					defer.resolve(data);
 				})
 				.error(function (error) {
-					console.log(error);
 					defer.reject([]);
 				});
 			return defer.promise;
 		};
-
-		virtualSwitch.find = function (SeachParams) {
-
-		}
 		return virtualSwitch;
 	};
 })();
@@ -608,6 +642,7 @@ String.prototype.capitalizeFirstLetter = function () {
 		return mainCtrl;
 	};
 })();
+// [TODO:David] Add authentication service to pass token into virtualSwitch service
 (function () {
 	var app = angular.module('app');
 	app.controller('networkController', networkCtrl);
@@ -646,7 +681,7 @@ String.prototype.capitalizeFirstLetter = function () {
 						return;
 					}
 					virtualSwitch.launch(vs);
-					networkCtrl.vss.push(vs);
+					virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {
@@ -655,7 +690,15 @@ String.prototype.capitalizeFirstLetter = function () {
 			};
 		});
 		layout.newDialog('networkDelete', function () {
-			console.log('Delete selected network switch dialog');
+			angular.forEach(networkCtrl.selected, function (item) {
+				virtualSwitch.delete(item).then(function () {
+					virtualSwitch.findAll().then(function (data) { networkCtrl.vss = data }, function (data) { networkCtrl.vss = data });
+				}, function () {
+					$mdToast.show($mdToast.simple({
+						content: 'Failed to delete ' + item.Name
+					}));
+				});
+			});
 		});
 		layout.tools([
 			{
@@ -697,9 +740,20 @@ String.prototype.capitalizeFirstLetter = function () {
 (function () {
 	var app = angular.module('app');
 	app.controller('storageController', storageCtrl);
-	storageCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast'];
-	function storageCtrl(layout, $scope, $mdBottomSheet, $mdToast) {
+	storageCtrl.$inject = ['layout', '$scope', '$mdBottomSheet', '$mdToast', 'virtualDisk'];
+	function storageCtrl(layout, $scope, $mdBottomSheet, $mdToast, virtualDisk) {
 		var storageCtrl = this;
+		virtualDisk.findAll().then(function (data) { storageCtrl.vhds = data; }, function (data) { storageCtrl.vhds = data; });
+		storageCtrl.selected = [];
+		storageCtrl.query = {
+			order: 'Name',
+			limit: 5,
+			page: 1,
+			filter: ''
+		};
+		storageCtrl.filter = function (item, index) {
+			return index >= (storageCtrl.query.limit * (storageCtrl.query.page - 1));
+		};
 		$scope.$on('$destroy', function () {
 			layout.removeDialog('storageCreate');
 			layout.removeDialog('storageDelete');
@@ -710,7 +764,7 @@ String.prototype.capitalizeFirstLetter = function () {
 				templateUrl: 'views/partials/createVD.tmpl.html',
 				controller: bottomCtrl
 			});
-			bottomCtrl.$inject = ['$scope', 'virtualMachine'];
+			bottomCtrl.$inject = ['$scope', 'virtualDisk'];
 			function bottomCtrl($scope, virtualDisk) {
 				$scope.launch = function (vhd) {
 					if (vhd.name == undefined || vhd.operatingSystem == undefined) {
@@ -720,7 +774,7 @@ String.prototype.capitalizeFirstLetter = function () {
 						return;
 					}
 					virtualDisk.launch(vhd);
-					storageCtrl.vhd.push(vhd);
+					virtualDisk.findAll().then(function (data) { storageCtrl.vhds = data; }, function (data) { storageCtrl.vhds = data; });
 					$mdBottomSheet.hide();
 				};
 				$scope.close = function () {
@@ -797,9 +851,6 @@ String.prototype.capitalizeFirstLetter = function () {
 				};
 			};
 		});
-		function Test(item) {
-			console.log(item);
-		};
 		layout.tools([
 			{
 				action: layout.openDialog,
