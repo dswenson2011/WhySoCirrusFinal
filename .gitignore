@@ -1,4 +1,3 @@
-lib/configs/config.json
 app/js/compiled.js
 app/js/compiled.min.js
 tasks.json

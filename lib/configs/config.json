@@ -1,0 +1,24 @@
+{
+	"host": {
+		"host": "",
+		"username": "",
+		"password": ""
+	},
+	"redis": {
+		"host": "",
+		"password": ""
+	},
+	"sql": {
+		"host": "",
+		"dialect": "",
+		"database": "",
+		"username": "",
+		"password": ""
+	},
+	"ldap": {
+		"url": "",
+		"base": "",
+		"bindDN": "",
+		"bindCredentials": ""
+	}
+}
