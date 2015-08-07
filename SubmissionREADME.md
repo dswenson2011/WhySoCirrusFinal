@@ -1,9 +1,9 @@
 #Submission layout
 - WhySoCirrusFinal-1.0.0
-- SubmissionREADME.md
+- [SubmissionREADME.md](https://github.com/dswenson2011/WhySoCirrusFinal/blob/master/SubmissionREADME.md)
 - Network-Diagram.pdf
 - [Final Slides](https://whysocirr.us/finalSlide)
-- [Configuration File Skeleton](https://github.com/dswenson2011/WhySoCirrusFinal/blob/c2a8a84c2d69915f66be6cf7a009ea12c2b021a3/lib/configs/config.json)
+- [Configuration File Skeleton](https://github.com/dswenson2011/WhySoCirrusFinal/blob/master/lib/configs/config.json)
 - [Midterm Slides](http://slides.whysocirr.us/)
 
 ---
